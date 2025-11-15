@@ -1,20 +1,20 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { Phone, Mail, MapPin, Calendar, Users, TrendingUp, Download, AlertCircle } from "lucide-react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card";
-import { Badge } from "./ui/badge";
-import { Button } from "./ui/button";
-import { Progress } from "./ui/progress";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "./ui/tabs";
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
-import { Input } from "./ui/input";
-import { Textarea } from "./ui/textarea";
-import { Label } from "./ui/label";
-import { ImageWithFallback } from "./figma/ImageWithFallback";
-import { PostCard } from "./PostCard";
-import { panchayatAPI, postsAPI, schemesAPI, announcementsAPI, membersAPI, galleryAPI, projectsAPI } from "../services/api";
-import type { Post, Scheme, Announcement, PanchayatMember, GalleryItem, Project, PanchayatDetails } from "../types";
-import { formatTimeAgo } from "../utils/format";
+import { Phone, Mail, MapPin, Calendar, Users, TrendingUp, Download, AlertCircle, Shield, ExternalLink } from "lucide-react";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card";
+import { Badge } from "../ui/badge";
+import { Button } from "../ui/button";
+import { Progress } from "../ui/progress";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { Input } from "../ui/input";
+import { Textarea } from "../ui/textarea";
+import { Label } from "../ui/label";
+import { ImageWithFallback } from "../figma/ImageWithFallback";
+import { PostCard } from "../sachiv/PostCard";
+import { panchayatAPI, postsAPI, schemesAPI, announcementsAPI, membersAPI, galleryAPI, projectsAPI } from "../../services/api";
+import type { Post, Scheme, Announcement, PanchayatMember, GalleryItem, Project, PanchayatDetails } from "../../types";
+import { formatTimeAgo } from "../../utils/format";
 
 
 export function PanchayatWebsite() {
@@ -28,7 +28,14 @@ export function PanchayatWebsite() {
   const [gallery, setGallery] = useState<GalleryItem[]>([]);
   const [projects, setProjects] = useState<Project[]>([]);
   const [loading, setLoading] = useState(true);
-
+  const [contactForm, setContactForm] = useState({
+    name: "",
+    email: "",
+    subject: "",
+    message: "",
+  });
+  const [formErrors, setFormErrors] = useState<Record<string, string>>({});
+  const [formSubmitted, setFormSubmitted] = useState(false);
 
   useEffect(() => {
     fetchPanchayatData();
@@ -77,29 +84,97 @@ export function PanchayatWebsite() {
     }
   };
 
+  const validateContactForm = () => {
+    const errors: Record<string, string> = {};
+    
+    if (!contactForm.name.trim()) {
+      errors.name = "Name is required";
+    }
+    
+    if (!contactForm.email.trim()) {
+      errors.email = "Email is required";
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(contactForm.email)) {
+      errors.email = "Please enter a valid email address";
+    }
+    
+    if (!contactForm.subject.trim()) {
+      errors.subject = "Subject is required";
+    }
+    
+    if (!contactForm.message.trim()) {
+      errors.message = "Message is required";
+    } else if (contactForm.message.trim().length < 10) {
+      errors.message = "Message must be at least 10 characters";
+    }
+    
+    setFormErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
 
+  const handleContactSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    if (validateContactForm()) {
+      // TODO: Implement actual form submission
+      console.log("Form submitted:", contactForm);
+      setFormSubmitted(true);
+      setContactForm({ name: "", email: "", subject: "", message: "" });
+      setTimeout(() => setFormSubmitted(false), 5000);
+    }
+  };
 
   return (
-    <div className="min-h-screen bg-white">
-      {/* Hero Banner - Mobile Responsive */}
-      <section className="relative h-[250px] sm:h-[300px] md:h-[350px] lg:h-[320px] overflow-hidden">
-        <ImageWithFallback
-          src={panchayat?.heroImage || "https://images.unsplash.com/photo-1736914319111-d54ada582633?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxpbmRpYW4lMjB2aWxsYWdlJTIwcGFuY2hheWF0fGVufDF8fHx8MTc2Mjc1MjM1N3ww&ixlib=rb-4.1.0&q=80&w=1080"}
-          alt={`${panchayat?.name || 'Ramnagar'} Gram Panchayat`}
-          className="h-full w-full object-contain"
-        />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/70 to-black/30">
-          <div className="container mx-auto flex h-full flex-col justify-center px-4 sm:px-6 lg:px-8">
-            <div className="max-w-2xl text-white">
-              <h1 className="mb-2 sm:mb-4 text-2xl sm:text-3xl md:text-4xl lg:text-5xl leading-tight">
+    <div className="min-h-screen bg-[#F5F5F5]">
+      {/* Skip to Content Link for Accessibility */}
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:bg-[#E31E24] focus:text-white focus:px-4 focus:py-2 focus:rounded-md focus:shadow-lg"
+        aria-label="Skip to main content"
+      >
+        Skip to main content
+      </a>
+
+      {/* Clean Banner with Panchayat Name + Breadcrumb */}
+      <section className="border-b border-[#E5E5E5] bg-white">
+        <div className="container mx-auto px-4 py-6 sm:px-6 lg:px-8">
+          {/* Breadcrumb */}
+          <nav className="mb-4 text-sm text-[#666]" aria-label="Breadcrumb">
+            <ol className="flex items-center gap-2">
+              <li>
+                <a href="/" className="hover:text-[#E31E24] transition-colors">Home</a>
+              </li>
+              <li>/</li>
+              <li>
+                <a href="#" className="hover:text-[#E31E24] transition-colors">Panchayats</a>
+              </li>
+              <li>/</li>
+              <li className="text-[#1B2B5E] font-medium">
+                {panchayat?.name || 'Ramnagar'}
+              </li>
+            </ol>
+          </nav>
+          
+          {/* Panchayat Name and Info */}
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <h1 className="mb-2 text-3xl font-bold text-[#1B2B5E] sm:text-4xl">
                 {panchayat?.name || 'Ramnagar'} Gram Panchayat
               </h1>
-              <p className="text-base sm:text-lg md:text-xl lg:text-2xl">
+              <p className="text-[#666]">
                 {panchayat?.district || 'Varanasi'} District, {panchayat?.state || 'Uttar Pradesh'}
               </p>
-              <p className="mt-1 sm:mt-2 text-sm sm:text-base text-white/90">
-                Welcome to our village - Where tradition meets progress
-              </p>
+            </div>
+            <div className="flex items-center gap-4">
+              <a 
+                href="https://www.india.gov.in" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                className="flex items-center gap-1 text-sm text-[#666] hover:text-[#E31E24] transition-colors"
+                aria-label="Visit India.gov.in - Opens in new tab"
+              >
+                <span>India.gov.in</span>
+                <ExternalLink className="h-3 w-3" aria-hidden="true" />
+              </a>
             </div>
           </div>
         </div>
@@ -107,50 +182,61 @@ export function PanchayatWebsite() {
 
 
       {/* Quick Stats - Mobile Responsive Grid */}
-      <section className="border-b bg-[#f8f9fa] py-4 sm:py-6 md:py-8">
+      <section 
+        className="border-b border-[#E5E5E5] bg-white py-6 sm:py-8"
+        aria-label="Panchayat statistics"
+      >
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid gap-3 sm:gap-4 md:gap-6 grid-cols-2 lg:grid-cols-4">
-            <Card>
+          <div className="grid gap-3 sm:gap-4 md:gap-6 grid-cols-2 lg:grid-cols-4" role="list">
+            <Card role="listitem" className="transition-shadow hover:shadow-md">
               <CardContent className="flex flex-col sm:flex-row items-center gap-2 sm:gap-4 p-3 sm:p-4 md:p-6">
-                <div className="flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-lg bg-[#FF9933]/10">
+                <div className="flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-lg bg-[#FF9933]/10" aria-hidden="true">
                   <Users className="h-5 w-5 sm:h-6 sm:w-6 text-[#FF9933]" />
                 </div>
                 <div className="text-center sm:text-left">
                   <p className="text-muted-foreground text-xs sm:text-sm">Population</p>
-                  <p className="text-lg sm:text-xl md:text-2xl font-semibold">{panchayat?.population?.toLocaleString() || '5,200'}</p>
+                  <p className="text-lg sm:text-xl md:text-2xl font-semibold" aria-label={`Population: ${panchayat?.population?.toLocaleString() || '5,200'}`}>
+                    {panchayat?.population?.toLocaleString() || '5,200'}
+                  </p>
                 </div>
               </CardContent>
             </Card>
-            <Card>
+            <Card role="listitem" className="transition-shadow hover:shadow-md">
               <CardContent className="flex flex-col sm:flex-row items-center gap-2 sm:gap-4 p-3 sm:p-4 md:p-6">
-                <div className="flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-lg bg-[#138808]/10">
+                <div className="flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-lg bg-[#138808]/10" aria-hidden="true">
                   <MapPin className="h-5 w-5 sm:h-6 sm:w-6 text-[#138808]" />
                 </div>
                 <div className="text-center sm:text-left">
                   <p className="text-muted-foreground text-xs sm:text-sm">Area</p>
-                  <p className="text-lg sm:text-xl md:text-2xl font-semibold">{panchayat?.area || '12.5'} km²</p>
+                  <p className="text-lg sm:text-xl md:text-2xl font-semibold" aria-label={`Area: ${panchayat?.area || '12.5'} square kilometers`}>
+                    {panchayat?.area || '12.5'} km²
+                  </p>
                 </div>
               </CardContent>
             </Card>
-            <Card>
+            <Card role="listitem" className="transition-shadow hover:shadow-md">
               <CardContent className="flex flex-col sm:flex-row items-center gap-2 sm:gap-4 p-3 sm:p-4 md:p-6">
-                <div className="flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-lg bg-[#FF9933]/10">
+                <div className="flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-lg bg-[#FF9933]/10" aria-hidden="true">
                   <TrendingUp className="h-5 w-5 sm:h-6 sm:w-6 text-[#FF9933]" />
                 </div>
                 <div className="text-center sm:text-left">
                   <p className="text-muted-foreground text-xs sm:text-sm">Wards</p>
-                  <p className="text-lg sm:text-xl md:text-2xl font-semibold">{panchayat?.wards || '8'}</p>
+                  <p className="text-lg sm:text-xl md:text-2xl font-semibold" aria-label={`Number of wards: ${panchayat?.wards || '8'}`}>
+                    {panchayat?.wards || '8'}
+                  </p>
                 </div>
               </CardContent>
             </Card>
-            <Card>
+            <Card role="listitem" className="transition-shadow hover:shadow-md">
               <CardContent className="flex flex-col sm:flex-row items-center gap-2 sm:gap-4 p-3 sm:p-4 md:p-6">
-                <div className="flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-lg bg-[#138808]/10">
+                <div className="flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-lg bg-[#138808]/10" aria-hidden="true">
                   <Calendar className="h-5 w-5 sm:h-6 sm:w-6 text-[#138808]" />
                 </div>
                 <div className="text-center sm:text-left">
                   <p className="text-muted-foreground text-xs sm:text-sm">Established</p>
-                  <p className="text-lg sm:text-xl md:text-2xl font-semibold">{panchayat?.established || '1995'}</p>
+                  <p className="text-lg sm:text-xl md:text-2xl font-semibold" aria-label={`Established in year: ${panchayat?.established || '1995'}`}>
+                    {panchayat?.established || '1995'}
+                  </p>
                 </div>
               </CardContent>
             </Card>
@@ -160,18 +246,48 @@ export function PanchayatWebsite() {
 
 
       {/* Main Content - Mobile Responsive */}
-      <section className="py-6 sm:py-8 md:py-12">
+      <main id="main-content" className="bg-[#F5F5F5] py-6 sm:py-8 md:py-12" role="main">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4 sm:space-y-6 md:space-y-8">
-            {/* Horizontal scrollable tabs on mobile */}
-            <div className="relative -mx-4 sm:mx-0">
-              <TabsList className="w-full inline-flex sm:grid grid-cols-3 lg:grid-cols-6 overflow-x-auto overflow-y-hidden whitespace-nowrap px-4 sm:px-0 scrollbar-hide gap-1 sm:gap-0">
-                <TabsTrigger value="home" className="text-xs sm:text-sm px-3 sm:px-4 py-2">Home</TabsTrigger>
-                <TabsTrigger value="about" className="text-xs sm:text-sm px-3 sm:px-4 py-2">About</TabsTrigger>
-                <TabsTrigger value="schemes" className="text-xs sm:text-sm px-3 sm:px-4 py-2">Schemes</TabsTrigger>
-                <TabsTrigger value="projects" className="text-xs sm:text-sm px-3 sm:px-4 py-2">Projects</TabsTrigger>
-                <TabsTrigger value="gallery" className="text-xs sm:text-sm px-3 sm:px-4 py-2">Gallery</TabsTrigger>
-                <TabsTrigger value="contact" className="text-xs sm:text-sm px-3 sm:px-4 py-2">Contact</TabsTrigger>
+          <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6 sm:space-y-8">
+            {/* Horizontal Tab Navigation - Modern Pills Style */}
+            <div className="relative -mx-4 sm:mx-0 bg-white border-b border-[#E5E5E5]">
+              <TabsList className="w-full inline-flex sm:grid grid-cols-3 lg:grid-cols-6 overflow-x-auto overflow-y-hidden whitespace-nowrap px-4 sm:px-0 scrollbar-hide gap-1 sm:gap-0 h-auto bg-transparent">
+                <TabsTrigger 
+                  value="home" 
+                  className="text-sm px-4 py-3 rounded-t-lg data-[state=active]:bg-[#E31E24] data-[state=active]:text-white data-[state=active]:font-semibold text-[#666] hover:text-[#1B2B5E] transition-colors"
+                >
+                  Home
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="about" 
+                  className="text-sm px-4 py-3 rounded-t-lg data-[state=active]:bg-[#E31E24] data-[state=active]:text-white data-[state=active]:font-semibold text-[#666] hover:text-[#1B2B5E] transition-colors"
+                >
+                  About
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="schemes" 
+                  className="text-sm px-4 py-3 rounded-t-lg data-[state=active]:bg-[#E31E24] data-[state=active]:text-white data-[state=active]:font-semibold text-[#666] hover:text-[#1B2B5E] transition-colors"
+                >
+                  Schemes
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="projects" 
+                  className="text-sm px-4 py-3 rounded-t-lg data-[state=active]:bg-[#E31E24] data-[state=active]:text-white data-[state=active]:font-semibold text-[#666] hover:text-[#1B2B5E] transition-colors"
+                >
+                  Projects
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="gallery" 
+                  className="text-sm px-4 py-3 rounded-t-lg data-[state=active]:bg-[#E31E24] data-[state=active]:text-white data-[state=active]:font-semibold text-[#666] hover:text-[#1B2B5E] transition-colors"
+                >
+                  Gallery
+                </TabsTrigger>
+                <TabsTrigger 
+                  value="contact" 
+                  className="text-sm px-4 py-3 rounded-t-lg data-[state=active]:bg-[#E31E24] data-[state=active]:text-white data-[state=active]:font-semibold text-[#666] hover:text-[#1B2B5E] transition-colors"
+                >
+                  Contact
+                </TabsTrigger>
               </TabsList>
             </div>
 
@@ -180,10 +296,10 @@ export function PanchayatWebsite() {
             <TabsContent value="home" className="space-y-6 sm:space-y-8">
               <div className="grid gap-6 sm:gap-8 lg:grid-cols-3">
                 {/* Left Sidebar - Stack on mobile, sidebar on desktop */}
-                <div className="space-y-4 sm:space-y-6 lg:col-span-1 order-2 lg:order-1">
+                <aside className="space-y-4 sm:space-y-6 lg:col-span-1 order-2 lg:order-1" aria-label="Sidebar content">
                   {/* Latest Announcements */}
-                  <div>
-                    <h3 className="mb-3 sm:mb-4 text-lg sm:text-xl">Latest Announcements</h3>
+                  <section>
+                    <h3 className="mb-3 sm:mb-4 text-lg sm:text-xl font-semibold">Latest Announcements</h3>
                     <div className="space-y-3">
                       {announcements.slice(0, 3).map((announcement) => (
                         <Card key={announcement.id} className="border-l-4 border-l-[#FF9933]">
@@ -202,13 +318,13 @@ export function PanchayatWebsite() {
                         </Card>
                       ))}
                     </div>
-                  </div>
+                  </section>
 
 
                   {/* Featured Schemes */}
-                  <div>
+                  <section>
                     <div className="mb-3 sm:mb-4 flex items-center justify-between">
-                      <h3 className="text-lg sm:text-xl">Active Schemes</h3>
+                      <h3 className="text-lg sm:text-xl font-semibold">Active Schemes</h3>
                       <Button
                         variant="ghost"
                         size="sm"
@@ -245,14 +361,14 @@ export function PanchayatWebsite() {
                         </Card>
                       ))}
                     </div>
-                  </div>
-                </div>
+                  </section>
+                </aside>
 
 
                 {/* Main Feed */}
-                <div className="space-y-4 sm:space-y-6 lg:col-span-2 order-1 lg:order-2">
+                <section className="space-y-4 sm:space-y-6 lg:col-span-2 order-1 lg:order-2" aria-label="Community feed">
                   <div>
-                    <h2 className="mb-4 sm:mb-6 text-xl sm:text-2xl">Community Feed</h2>
+                    <h2 className="mb-4 sm:mb-6 text-xl sm:text-2xl font-bold">Community Feed</h2>
                     <div className="space-y-4 sm:space-y-6">
                       {loading ? (
                         <div className="text-center text-muted-foreground py-8 text-sm sm:text-base">Loading posts...</div>
@@ -271,7 +387,7 @@ export function PanchayatWebsite() {
                       )}
                     </div>
                   </div>
-                </div>
+                </section>
               </div>
             </TabsContent>
 
@@ -279,8 +395,8 @@ export function PanchayatWebsite() {
             {/* About Tab */}
             <TabsContent value="about" className="space-y-6 sm:space-y-8">
               <div className="grid gap-6 sm:gap-8 lg:grid-cols-2">
-                <div>
-                  <h2 className="mb-3 sm:mb-4 text-xl sm:text-2xl">About {panchayat?.name || 'Ramnagar'}</h2>
+                <section>
+                  <h2 className="mb-3 sm:mb-4 text-xl sm:text-2xl font-bold">About {panchayat?.name || 'Ramnagar'}</h2>
                   {panchayat?.description ? (
                     <p className="mb-4 text-sm sm:text-base text-muted-foreground whitespace-pre-line">
                       {panchayat.description}
@@ -309,9 +425,9 @@ export function PanchayatWebsite() {
                       </ul>
                     </>
                   )}
-                </div>
-                <div>
-                  <h3 className="mb-3 sm:mb-4 text-lg sm:text-xl">Elected Members</h3>
+                </section>
+                <section>
+                  <h3 className="mb-3 sm:mb-4 text-lg sm:text-xl font-semibold">Elected Members</h3>
                   {loading ? (
                     <div className="text-center text-muted-foreground py-8 text-sm sm:text-base">Loading members...</div>
                   ) : members.length === 0 ? (
@@ -343,15 +459,15 @@ export function PanchayatWebsite() {
                       ))}
                     </div>
                   )}
-                </div>
+                </section>
               </div>
             </TabsContent>
 
 
             {/* Schemes Tab */}
             <TabsContent value="schemes" className="space-y-6 sm:space-y-8">
-              <div>
-                <h2 className="mb-4 sm:mb-6 text-xl sm:text-2xl">Government Schemes</h2>
+              <section>
+                <h2 className="mb-4 sm:mb-6 text-xl sm:text-2xl font-bold">Government Schemes</h2>
                 <div className="grid gap-4 sm:gap-6 md:grid-cols-2">
                   {schemes.map((scheme) => (
                     <Card key={scheme.id} className="transition-shadow hover:shadow-lg">
@@ -387,14 +503,14 @@ export function PanchayatWebsite() {
                     </Card>
                   ))}
                 </div>
-              </div>
+              </section>
             </TabsContent>
 
 
             {/* Projects Tab */}
             <TabsContent value="projects" className="space-y-6 sm:space-y-8">
-              <div>
-                <h2 className="mb-4 sm:mb-6 text-xl sm:text-2xl">Development Projects</h2>
+              <section>
+                <h2 className="mb-4 sm:mb-6 text-xl sm:text-2xl font-bold">Development Projects</h2>
                 {loading ? (
                   <div className="text-center text-muted-foreground py-8 text-sm sm:text-base">Loading projects...</div>
                 ) : projects.length === 0 ? (
@@ -426,7 +542,7 @@ export function PanchayatWebsite() {
                                     ? 'bg-[#138808] text-white'
                                     : project.status === 'In Progress'
                                     ? 'bg-[#FF9933] text-white'
-                                    : 'bg-gray-500 text-white'
+                                    : 'bg-[#666] text-white'
                                 }
                               >
                                 {project.status}
@@ -442,14 +558,14 @@ export function PanchayatWebsite() {
                     ))}
                   </div>
                 )}
-              </div>
+              </section>
             </TabsContent>
 
 
             {/* Gallery Tab */}
             <TabsContent value="gallery" className="space-y-6 sm:space-y-8">
-              <div>
-                <h2 className="mb-4 sm:mb-6 text-xl sm:text-2xl">Photo Gallery</h2>
+              <section>
+                <h2 className="mb-4 sm:mb-6 text-xl sm:text-2xl font-bold">Photo Gallery</h2>
                 {loading ? (
                   <div className="text-center text-muted-foreground py-8 text-sm sm:text-base">Loading gallery...</div>
                 ) : gallery.length === 0 ? (
@@ -476,15 +592,15 @@ export function PanchayatWebsite() {
                     ))}
                   </div>
                 )}
-              </div>
+              </section>
             </TabsContent>
 
 
             {/* Contact Tab */}
             <TabsContent value="contact" className="space-y-6 sm:space-y-8">
               <div className="grid gap-6 sm:gap-8 lg:grid-cols-2">
-                <div>
-                  <h2 className="mb-4 sm:mb-6 text-xl sm:text-2xl">Contact Information</h2>
+                <section>
+                  <h2 className="mb-4 sm:mb-6 text-xl sm:text-2xl font-bold">Contact Information</h2>
                   <Card>
                     <CardContent className="space-y-4 sm:space-y-6 p-4 sm:p-6">
                       {panchayat?.contactInfo ? (
@@ -566,38 +682,129 @@ export function PanchayatWebsite() {
                       )}
                     </CardContent>
                   </Card>
-                </div>
-                <div>
-                  <h2 className="mb-4 sm:mb-6 text-xl sm:text-2xl">Send us a Message</h2>
+                </section>
+                <section>
+                  <h2 className="mb-4 sm:mb-6 text-xl sm:text-2xl font-bold">Send us a Message</h2>
                   <Card>
                     <CardContent className="space-y-3 sm:space-y-4 p-4 sm:p-6">
-                      <div className="space-y-2">
-                        <Label htmlFor="name" className="text-xs sm:text-sm">Name</Label>
-                        <Input id="name" placeholder="Your name" className="text-sm" />
-                      </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="email" className="text-xs sm:text-sm">Email</Label>
-                        <Input id="email" type="email" placeholder="your@email.com" className="text-sm" />
-                      </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="subject" className="text-xs sm:text-sm">Subject</Label>
-                        <Input id="subject" placeholder="What is this about?" className="text-sm" />
-                      </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="message" className="text-xs sm:text-sm">Message</Label>
-                        <Textarea id="message" placeholder="Your message..." rows={5} className="text-sm" />
-                      </div>
-                      <Button className="w-full bg-[#FF9933] hover:bg-[#FF9933]/90 text-sm sm:text-base">
-                        Send Message
-                      </Button>
+                      {formSubmitted && (
+                        <div className="rounded-lg bg-[#138808]/10 border border-[#138808] p-3 text-sm text-[#138808]">
+                          Thank you! Your message has been sent successfully. We will get back to you soon.
+                        </div>
+                      )}
+                      <form onSubmit={handleContactSubmit} noValidate>
+                        <div className="space-y-3 sm:space-y-4">
+                          <div className="space-y-2">
+                            <Label htmlFor="name" className="text-xs sm:text-sm">
+                              Name <span className="text-destructive" aria-label="required">*</span>
+                            </Label>
+                            <Input
+                              id="name"
+                              placeholder="Your name"
+                              className={`text-sm ${formErrors.name ? 'border-destructive' : ''}`}
+                              value={contactForm.name}
+                              onChange={(e) => {
+                                setContactForm({ ...contactForm, name: e.target.value });
+                                if (formErrors.name) setFormErrors({ ...formErrors, name: '' });
+                              }}
+                              aria-invalid={!!formErrors.name}
+                              aria-describedby={formErrors.name ? 'name-error' : undefined}
+                              required
+                            />
+                            {formErrors.name && (
+                              <p id="name-error" className="text-xs text-destructive" role="alert">
+                                {formErrors.name}
+                              </p>
+                            )}
+                          </div>
+                          <div className="space-y-2">
+                            <Label htmlFor="email" className="text-xs sm:text-sm">
+                              Email <span className="text-destructive" aria-label="required">*</span>
+                            </Label>
+                            <Input
+                              id="email"
+                              type="email"
+                              placeholder="your@email.com"
+                              className={`text-sm ${formErrors.email ? 'border-destructive' : ''}`}
+                              value={contactForm.email}
+                              onChange={(e) => {
+                                setContactForm({ ...contactForm, email: e.target.value });
+                                if (formErrors.email) setFormErrors({ ...formErrors, email: '' });
+                              }}
+                              aria-invalid={!!formErrors.email}
+                              aria-describedby={formErrors.email ? 'email-error' : undefined}
+                              required
+                            />
+                            {formErrors.email && (
+                              <p id="email-error" className="text-xs text-destructive" role="alert">
+                                {formErrors.email}
+                              </p>
+                            )}
+                          </div>
+                          <div className="space-y-2">
+                            <Label htmlFor="subject" className="text-xs sm:text-sm">
+                              Subject <span className="text-destructive" aria-label="required">*</span>
+                            </Label>
+                            <Input
+                              id="subject"
+                              placeholder="What is this about?"
+                              className={`text-sm ${formErrors.subject ? 'border-destructive' : ''}`}
+                              value={contactForm.subject}
+                              onChange={(e) => {
+                                setContactForm({ ...contactForm, subject: e.target.value });
+                                if (formErrors.subject) setFormErrors({ ...formErrors, subject: '' });
+                              }}
+                              aria-invalid={!!formErrors.subject}
+                              aria-describedby={formErrors.subject ? 'subject-error' : undefined}
+                              required
+                            />
+                            {formErrors.subject && (
+                              <p id="subject-error" className="text-xs text-destructive" role="alert">
+                                {formErrors.subject}
+                              </p>
+                            )}
+                          </div>
+                          <div className="space-y-2">
+                            <Label htmlFor="message" className="text-xs sm:text-sm">
+                              Message <span className="text-destructive" aria-label="required">*</span>
+                            </Label>
+                            <Textarea
+                              id="message"
+                              placeholder="Your message..."
+                              rows={5}
+                              className={`text-sm ${formErrors.message ? 'border-destructive' : ''}`}
+                              value={contactForm.message}
+                              onChange={(e) => {
+                                setContactForm({ ...contactForm, message: e.target.value });
+                                if (formErrors.message) setFormErrors({ ...formErrors, message: '' });
+                              }}
+                              aria-invalid={!!formErrors.message}
+                              aria-describedby={formErrors.message ? 'message-error' : undefined}
+                              required
+                            />
+                            {formErrors.message && (
+                              <p id="message-error" className="text-xs text-destructive" role="alert">
+                                {formErrors.message}
+                              </p>
+                            )}
+                          </div>
+                          <Button 
+                            type="submit" 
+                            className="w-full bg-[#FF9933] hover:bg-[#FF9933]/90 text-sm sm:text-base"
+                            aria-label="Submit contact form"
+                          >
+                            Send Message
+                          </Button>
+                        </div>
+                      </form>
                     </CardContent>
                   </Card>
-                </div>
+                </section>
               </div>
             </TabsContent>
           </Tabs>
         </div>
-      </section>
+      </main>
     </div>
   );
 }

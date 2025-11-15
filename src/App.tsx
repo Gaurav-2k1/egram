@@ -1,12 +1,12 @@
 import { BrowserRouter, useLocation } from "react-router-dom";
-import { Header } from "./components/Header";
-import { Footer } from "./components/Footer";
+import { Footer } from "./components/main/Footer";
 import { Toaster } from "./components/ui/sonner";
 import { ErrorBoundary } from "./components/ErrorBoundary";
 import { AuthProvider } from "./contexts/AuthContext";
 import { AppRoutes } from "./routes";
 import { useLocalStorage } from "./hooks/useLocalStorage";
 import type { Language } from "./types";
+import { Header } from "./components/main/Header";
 
 function AppContent() {
   const location = useLocation();
@@ -22,7 +22,7 @@ function AppContent() {
 
   return (
     <ErrorBoundary>
-      <div className="min-h-screen bg-white">
+      <div className="min-h-screen bg-[#F5F5F5]">
         {/* Render header based on current route */}
         {!isDashboard && !isLogin && (
           <Header

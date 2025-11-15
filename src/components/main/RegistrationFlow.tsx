@@ -1,17 +1,17 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft, ArrowRight, Check, Upload, FileText, User, MapPin } from "lucide-react";
-import { Button } from "./ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./ui/card";
-import { Input } from "./ui/input";
-import { Label } from "./ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
-import { Checkbox } from "./ui/checkbox";
-import { Progress } from "./ui/progress";
-import { Badge } from "./ui/badge";
-import { panchayatAPI } from "../services/api";
+import { Button } from "../ui/button";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card";
+import { Input } from "../ui/input";
+import { Label } from "../ui/label";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
+import { Checkbox } from "../ui/checkbox";
+import { Progress } from "../ui/progress";
+import { Badge } from "../ui/badge";
+import { panchayatAPI } from "../../services/api";
 import { toast } from "sonner";
-import type { RegistrationFormData } from "../types";
+import type { RegistrationFormData } from "../../types";
 
 export function RegistrationFlow() {
   const navigate = useNavigate();
@@ -78,11 +78,11 @@ export function RegistrationFlow() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#FF9933]/5 via-white to-[#138808]/5 py-8">
+    <div className="min-h-screen bg-[#F5F5F5] py-8">
       <div className="container mx-auto px-4 lg:px-8">
         {/* Header */}
         <div className="mb-8">
-          <Button variant="ghost" onClick={() => navigate("/")}>
+          <Button variant="ghost" onClick={() => navigate("/")} className="text-[#666] hover:text-[#1B2B5E]">
             <ArrowLeft className="mr-2 h-4 w-4" />
             Back to Home
           </Button>
@@ -91,8 +91,8 @@ export function RegistrationFlow() {
         {/* Progress Bar */}
         <div className="mb-8">
           <div className="mb-4 flex items-center justify-between">
-            <h2>Panchayat Registration</h2>
-            <Badge variant="secondary">
+            <h2 className="text-2xl font-bold text-[#1B2B5E]">Panchayat Registration</h2>
+            <Badge variant="secondary" className="bg-[#F5F5F5] text-[#666]">
               Step {step} of {totalSteps}
             </Badge>
           </div>

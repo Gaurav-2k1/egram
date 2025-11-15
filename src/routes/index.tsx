@@ -4,13 +4,17 @@
  */
 
 import { Routes, Route, Navigate } from 'react-router-dom';
-import { LandingPage } from '../components/LandingPage';
-import { RegistrationFlow } from '../components/RegistrationFlow';
-import { PanchayatWebsite } from '../components/PanchayatWebsite';
-import { SachivDashboard } from '../components/SachivDashboard';
-import { Login } from '../components/Login';
-import { ProtectedRoute } from '../components/ProtectedRoute';
+
 import { SuccessPage } from '../pages/SuccessPage';
+import { LandingPage } from '@/components/main/LandingPage';
+import { RegistrationFlow } from '@/components/main/RegistrationFlow';
+import { PanchayatWebsite } from '@/components/public/PanchayatWebsite';
+import { Login } from '@/components/main/Login';
+import { ForgotPassword } from '@/components/main/ForgotPassword';
+import { ResetPassword } from '@/components/main/ResetPassword';
+import { ProtectedRoute } from '@/components/main/ProtectedRoute';
+import { SachivDashboard } from '@/components/sachiv/SachivDashboard';
+import { SuperAdminDashboard } from '@/components/admin/SuperAdminDashboard';
 
 export function AppRoutes() {
   return (
@@ -21,6 +25,8 @@ export function AppRoutes() {
       <Route path="/panchayat/:subdomain" element={<PanchayatWebsite />} />
       <Route path="/panchayat-demo" element={<PanchayatWebsite />} />
       <Route path="/login" element={<Login />} />
+      <Route path="/forgot-password" element={<ForgotPassword />} />
+      <Route path="/reset-password" element={<ResetPassword />} />
       <Route path="/success" element={<SuccessPage />} />
 
       {/* Protected Routes */}
@@ -29,6 +35,14 @@ export function AppRoutes() {
         element={
           <ProtectedRoute>
             <SachivDashboard />
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/admin"
+        element={
+          <ProtectedRoute>
+            <SuperAdminDashboard />
           </ProtectedRoute>
         }
       />

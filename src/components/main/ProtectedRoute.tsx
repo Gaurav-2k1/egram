@@ -4,8 +4,8 @@
  */
 
 import { Navigate, useLocation } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext';
-import { ErrorBoundary } from './ErrorBoundary';
+import { useAuth } from '../../contexts/AuthContext';
+import { ErrorBoundary } from '../ErrorBoundary';
 
 interface ProtectedRouteProps {
   children: React.ReactNode;

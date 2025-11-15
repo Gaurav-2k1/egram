@@ -1,15 +1,16 @@
 import { Link } from "react-router-dom";
-import { Menu, Globe, User } from "lucide-react";
-import { Button } from "./ui/button";
-import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
+import { Menu, Globe, User, Search, Calendar, Accessibility } from "lucide-react";
+import { Button } from "../ui/button";
+import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "./ui/dropdown-menu";
+} from "../ui/dropdown-menu";
 
-import type { Language } from "../types";
+import type { Language } from "../../types";
+import { useAuth } from "@/contexts/AuthContext";
 
 interface HeaderProps {
   variant?: "platform" | "panchayat";
@@ -18,6 +19,14 @@ interface HeaderProps {
 }
 
 export function Header({ variant = "platform", panchayatName, onLanguageChange }: HeaderProps) {
+
+  const {user} = useAuth();
+  
+  // Only show header when user is not authenticated (user is null)
+  if (user !== null) {
+    return null;
+  }
+  
   const navigationItems = variant === "platform" 
     ? [
         { label: "Home", href: "#home" },
@@ -36,13 +45,13 @@ export function Header({ variant = "platform", panchayatName, onLanguageChange }
       ];
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-white shadow-sm">
+    <header className="sticky top-0 z-50 w-full border-b border-[#E5E5E5] bg-white shadow-sm">
       <div className="container mx-auto px-4 lg:px-8">
         <div className="flex h-16 items-center justify-between">
           {/* Logo and Brand */}
           <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-[#FF9933] via-white to-[#138808] p-[2px]">
-              <div className="flex h-full w-full items-center justify-center rounded-full bg-white">
+            <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-gradient-to-br from-[#FF9933] via-white to-[#138808] p-[2px]">
+              <div className="flex h-full w-full items-center justify-center rounded-md bg-white">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
                   <circle cx="12" cy="12" r="10" fill="#138808" />
                   <path d="M12 4 L12 20 M4 12 L20 12" stroke="white" strokeWidth="2" />
@@ -51,16 +60,12 @@ export function Header({ variant = "platform", panchayatName, onLanguageChange }
               </div>
             </div>
             <div>
-              <h1 className="text-[#138808]">
+              <h1 className="text-lg font-semibold text-[#1B2B5E]">
                 {variant === "platform" ? "e-GramSeva" : panchayatName}
               </h1>
-              {variant === "platform" ? (
-                <p className="text-muted-foreground" style={{ fontSize: "0.75rem" }}>
+              {variant === "platform" && (
+                <p className="text-xs text-[#666666]">
                   Digital Platform for Gram Panchayats
-                </p>
-              ) : (
-                <p className="text-muted-foreground" style={{ fontSize: "0.75rem" }}>
-                  Gram Panchayat
                 </p>
               )}
             </div>
@@ -72,7 +77,7 @@ export function Header({ variant = "platform", panchayatName, onLanguageChange }
               <a
                 key={item.label}
                 href={item.href}
-                className="transition-colors hover:text-[#FF9933]"
+                className="text-sm font-medium text-[#333] transition-colors hover:text-[#E31E24]"
               >
                 {item.label}
               </a>
@@ -81,10 +86,26 @@ export function Header({ variant = "platform", panchayatName, onLanguageChange }
 
           {/* Action Buttons */}
           <div className="flex items-center gap-2">
+            {/* Search Icon */}
+            <Button variant="ghost" size="icon" className="hidden md:flex">
+              <Search className="h-5 w-5 text-[#666]" />
+            </Button>
+            
+            {/* Calendar */}
+            <Button variant="ghost" size="icon" className="hidden md:flex">
+              <Calendar className="h-5 w-5 text-[#666]" />
+            </Button>
+            
+            {/* Accessibility */}
+            <Button variant="ghost" size="icon" className="hidden md:flex">
+              <Accessibility className="h-5 w-5 text-[#666]" />
+            </Button>
+            
+            {/* Language Selector */}
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" size="icon">
-                  <Globe className="h-5 w-5" />
+                  <Globe className="h-5 w-5 text-[#666]" />
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
@@ -103,7 +124,7 @@ export function Header({ variant = "platform", panchayatName, onLanguageChange }
             {variant === "platform" && (
               <Button 
                 asChild
-                className="hidden bg-[#FF9933] hover:bg-[#FF9933]/90 md:inline-flex"
+                className="hidden bg-[#E31E24] text-white hover:bg-[#C91A20] md:inline-flex"
               >
                 <Link to="/login">
                   <User className="mr-2 h-4 w-4" />
@@ -125,7 +146,7 @@ export function Header({ variant = "platform", panchayatName, onLanguageChange }
                     <a
                       key={item.label}
                       href={item.href}
-                      className="border-b pb-3 transition-colors hover:text-[#FF9933]"
+                      className="border-b border-[#E5E5E5] pb-3 text-base font-medium text-[#333] transition-colors hover:text-[#E31E24]"
                     >
                       {item.label}
                     </a>
@@ -133,7 +154,7 @@ export function Header({ variant = "platform", panchayatName, onLanguageChange }
                   {variant === "platform" && (
                     <Button 
                       asChild
-                      className="mt-4 bg-[#FF9933] hover:bg-[#FF9933]/90"
+                      className="mt-4 bg-[#E31E24] text-white hover:bg-[#C91A20]"
                     >
                       <Link to="/login">
                         <User className="mr-2 h-4 w-4" />

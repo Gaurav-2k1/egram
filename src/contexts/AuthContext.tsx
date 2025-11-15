@@ -11,9 +11,9 @@ interface User {
   id: string;
   email: string;
   name: string;
-  role: string;
-  panchayatId: string;
-  panchayatName: string;
+  role: "super_admin" | "panchayat_admin" | "user";
+  panchayatId?: string;
+  panchayatName?: string;
 }
 
 interface AuthContextType {

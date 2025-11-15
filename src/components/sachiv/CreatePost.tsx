@@ -1,14 +1,14 @@
 import { useState } from "react";
 import { ImageIcon, Video, X, Smile } from "lucide-react";
-import { Card, CardContent } from "./ui/card";
-import { Avatar, AvatarFallback } from "./ui/avatar";
-import { Button } from "./ui/button";
-import { Textarea } from "./ui/textarea";
-import { Label } from "./ui/label";
-import { ImageWithFallback } from "./figma/ImageWithFallback";
-import type { PostMedia } from "../types";
-import { FILE_UPLOAD_LIMITS } from "../constants";
-import { validateFileSize, validateFileType } from "../utils/validation";
+import { Card, CardContent } from "../ui/card";
+import { Avatar, AvatarFallback } from "../ui/avatar";
+import { Button } from "../ui/button";
+import { Textarea } from "../ui/textarea";
+import { Label } from "../ui/label";
+import { ImageWithFallback } from "../figma/ImageWithFallback";
+import type { PostMedia } from "../../types";
+import { FILE_UPLOAD_LIMITS } from "../../constants";
+import { validateFileSize, validateFileType } from "../../utils/validation";
 import { toast } from "sonner";
 
 interface CreatePostProps {

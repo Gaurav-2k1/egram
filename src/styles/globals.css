@@ -1,44 +1,64 @@
+@import "tailwindcss";
+
 @custom-variant dark (&:is(.dark *));
 
+/* Government Portal Color System */
 :root {
   --font-size: 16px;
-  --background: #ffffff;
-  --foreground: oklch(0.145 0 0);
-  --card: #ffffff;
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: #030213;
-  --primary-foreground: oklch(1 0 0);
-  --secondary: oklch(0.95 0.0058 264.53);
-  --secondary-foreground: #030213;
-  --muted: #ececf0;
-  --muted-foreground: #717182;
-  --accent: #e9ebef;
-  --accent-foreground: #030213;
-  --destructive: #d4183d;
-  --destructive-foreground: #ffffff;
-  --border: rgba(0, 0, 0, 0.1);
+  
+  /* New Government Portal Color System */
+  --primary-red: #E31E24;
+  --primary-orange: #FF9933;
+  --primary-green: #138808;
+  --navy-blue: #1B2B5E;
+  --purple: #6C5CE7;
+  --purple-dark: #5B4B9D;
+  --background: #F5F5F5;
+  --card-background: #FFFFFF;
+  --text-primary: #1a1a1a;
+  --text-secondary: #666666;
+  --border-color: #E5E5E5;
+  --shadow-sm: 0 2px 8px rgba(0,0,0,0.08);
+  --shadow-md: 0 4px 16px rgba(0,0,0,0.12);
+  --shadow-lg: 0 8px 24px rgba(0,0,0,0.16);
+  
+  /* Legacy variables updated */
+  --foreground: #1a1a1a;
+  --card: #FFFFFF;
+  --card-foreground: #1a1a1a;
+  --popover: #FFFFFF;
+  --popover-foreground: #1a1a1a;
+  --primary: #E31E24;
+  --primary-foreground: #FFFFFF;
+  --secondary: #F5F5F5;
+  --secondary-foreground: #1a1a1a;
+  --muted: #FAFAFA;
+  --muted-foreground: #666666;
+  --accent: #F5F5F5;
+  --accent-foreground: #1a1a1a;
+  --destructive: #E31E24;
+  --destructive-foreground: #FFFFFF;
+  --border: #E5E5E5;
   --input: transparent;
-  --input-background: #f3f3f5;
+  --input-background: #FFFFFF;
   --switch-background: #cbced4;
   --font-weight-medium: 500;
   --font-weight-normal: 400;
-  --ring: oklch(0.708 0 0);
+  --ring: #E31E24;
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
   --chart-4: oklch(0.828 0.189 84.429);
   --chart-5: oklch(0.769 0.188 70.08);
-  --radius: 0.625rem;
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: #030213;
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
+  --radius: 0.5rem;
+  --sidebar: #FFFFFF;
+  --sidebar-foreground: #1a1a1a;
+  --sidebar-primary: #E31E24;
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent: #F5F5F5;
+  --sidebar-accent-foreground: #1a1a1a;
+  --sidebar-border: #E5E5E5;
+  --sidebar-ring: #E31E24;
 }
 
 .dark {
@@ -117,6 +137,17 @@
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+  /* Custom Government Portal Colors */
+  --color-primary-red: var(--primary-red);
+  --color-primary-orange: var(--primary-orange);
+  --color-primary-green: var(--primary-green);
+  --color-navy-blue: var(--navy-blue);
+  --color-purple: var(--purple);
+  --color-purple-dark: var(--purple-dark);
+  --color-card-background: var(--card-background);
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-border-color: var(--border-color);
 }
 
 @layer base {
@@ -126,6 +157,52 @@
 
   body {
     @apply bg-background text-foreground;
+    background-color: var(--background) !important;
+    color: var(--text-primary) !important;
+    line-height: 1.6;
+  }
+  
+  /* Section headers with colored underlines */
+  .section-title {
+    font-size: 2rem;
+    font-weight: 600;
+    color: var(--navy-blue);
+    margin-bottom: 1rem;
+    position: relative;
+    padding-bottom: 0.75rem;
+  }
+  
+  .section-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 60px;
+    height: 4px;
+    background: var(--primary-red);
+    border-radius: 2px;
+  }
+  
+  /* Modern card styling */
+  .modern-card {
+    background: var(--card-background);
+    border: 1px solid var(--border-color);
+    border-radius: 0.75rem;
+    box-shadow: var(--shadow-sm);
+    padding: 1.5rem;
+    transition: all 0.3s ease;
+  }
+  
+  .modern-card:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+  }
+  
+  /* Button focus states */
+  button:focus-visible,
+  a:focus-visible {
+    outline: 2px solid var(--primary-red);
+    outline-offset: 2px;
   }
 }
 
@@ -203,4 +280,22 @@ html {
 .scrollbar-hide {
   -webkit-overflow-scrolling: touch;
   scroll-behavior: smooth;
+}
+
+/* Custom scrollbar for tables */
+.overflow-x-auto::-webkit-scrollbar {
+  height: 8px;
+}
+
+.overflow-x-auto::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.overflow-x-auto::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+}
+
+.overflow-x-auto::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.3);
 }

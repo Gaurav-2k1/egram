@@ -14,6 +14,21 @@ import type {
   ActivePanchayat,
   Project,
   PanchayatDetails,
+  AdminUser,
+  TeamMember,
+  Document,
+  Comment,
+  Album,
+  PanchayatSettings,
+  AnalyticsOverview,
+  PageView,
+  PopularPost,
+  EngagementStats,
+  SuperAdminPanchayat,
+  AuditLog,
+  PostWithStatus,
+  UserStatus,
+  PanchayatStatus,
 } from '../types';
 
 // Create axios instance
@@ -59,6 +74,15 @@ const mockData = {
       password: 'password123',
       name: 'Rajesh Sharma',
       role: 'Panchayat Sachiv',
+      panchayatId: 'panchayat-1',
+      panchayatName: 'Ramnagar',
+    },
+    {
+      id: '2',
+      email: 'admin@gmail.com',
+      password: 'password123',
+      name: 'Rajesh Sharma',
+      role: 'super_admin',
       panchayatId: 'panchayat-1',
       panchayatName: 'Ramnagar',
     },
@@ -301,6 +325,125 @@ const mockData = {
       startDate: '2025-05-01',
       endDate: '2025-09-01',
       images: [],
+    },
+  ],
+  // New mock data
+  adminUsers: [
+    {
+      id: 'admin-1',
+      email: 'admin@egramseva.gov.in',
+      name: 'Super Admin',
+      role: 'super_admin' as const,
+      status: 'active' as const,
+      createdAt: '2024-01-01T00:00:00Z',
+      lastLogin: '2025-01-15T10:30:00Z',
+    },
+    {
+      id: '1',
+      email: 'sachiv@ramnagar.egramseva.gov.in',
+      name: 'Rajesh Sharma',
+      role: 'panchayat_admin' as const,
+      panchayatId: 'panchayat-1',
+      panchayatName: 'Ramnagar',
+      status: 'active' as const,
+      createdAt: '2024-06-01T00:00:00Z',
+      lastLogin: '2025-01-15T09:00:00Z',
+    },
+  ],
+  teamMembers: [
+    {
+      id: '1',
+      panchayatId: 'panchayat-1',
+      name: 'Rajesh Sharma',
+      email: 'sachiv@ramnagar.egramseva.gov.in',
+      role: 'Panchayat Sachiv',
+      status: 'active' as const,
+      createdAt: '2024-06-01T00:00:00Z',
+      lastActive: '2025-01-15T09:00:00Z',
+    },
+  ],
+  documents: [
+    {
+      id: 'doc-1',
+      panchayatId: 'panchayat-1',
+      title: 'Annual Budget Report 2024',
+      description: 'Complete budget allocation and expenditure report',
+      category: 'Financial',
+      fileUrl: '/documents/budget-2024.pdf',
+      fileName: 'budget-2024.pdf',
+      fileSize: 2048576,
+      fileType: 'application/pdf',
+      uploadedBy: 'Rajesh Sharma',
+      uploadedAt: '2024-12-01T10:00:00Z',
+      isPublic: true,
+    },
+  ],
+  comments: [
+    {
+      id: 'comment-1',
+      postId: '1',
+      panchayatId: 'panchayat-1',
+      author: 'Village Resident',
+      authorEmail: 'resident@example.com',
+      content: 'Great initiative! Looking forward to seeing the progress.',
+      status: 'approved' as const,
+      createdAt: '2025-01-10T14:30:00Z',
+      approvedBy: 'Rajesh Sharma',
+      approvedAt: '2025-01-10T15:00:00Z',
+    },
+  ],
+  albums: [
+    {
+      id: 'album-1',
+      panchayatId: 'panchayat-1',
+      title: 'Infrastructure Development',
+      description: 'Photos of ongoing infrastructure projects',
+      coverImage: 'https://images.unsplash.com/photo-1759738098462-90ffac98c554',
+      imageCount: 12,
+      createdAt: '2024-10-01T00:00:00Z',
+      updatedAt: '2024-12-15T00:00:00Z',
+    },
+  ],
+  settings: [
+    {
+      id: 'settings-1',
+      panchayatId: 'panchayat-1',
+      hero: {
+        title: 'Welcome to Ramnagar Gram Panchayat',
+        subtitle: 'Digital Governance for Rural India',
+        description: 'Empowering our community through transparent governance',
+        image: 'https://images.unsplash.com/photo-1736914319111-d54ada582633',
+      },
+      about: {
+        title: 'About Ramnagar',
+        content: 'Ramnagar Gram Panchayat is a vibrant rural community...',
+        features: [
+          '3 Primary Schools and 1 High School',
+          'Primary Health Center with 24/7 services',
+          'Community Hall and Sports Ground',
+        ],
+      },
+      contact: {
+        address: 'Ramnagar Gram Panchayat Bhawan, Varanasi, Uttar Pradesh - 221001',
+        phone: '+91 542-XXXXXX',
+        email: 'ramnagar@egramseva.gov.in',
+        officeHours: 'Monday - Friday: 10:00 AM - 5:00 PM\nSaturday: 10:00 AM - 2:00 PM',
+      },
+      logo: undefined,
+      updatedAt: '2024-12-01T00:00:00Z',
+    },
+  ],
+  auditLogs: [
+    {
+      id: 'log-1',
+      userId: '1',
+      userName: 'Rajesh Sharma',
+      action: 'CREATE',
+      resource: 'Post',
+      resourceId: '1',
+      details: { title: 'New Post' },
+      ipAddress: '192.168.1.1',
+      createdAt: '2025-01-15T10:00:00Z',
     },
   ],
 };
@@ -686,6 +829,628 @@ export const analyticsAPI = {
       announcements: mockData.announcements.filter((a) => a.panchayatId === panchayatId).length,
       photoGallery: mockData.gallery.filter((g) => g.panchayatId === panchayatId).length,
     };
+  },
+
+  getOverview: async (panchayatId: string): Promise<AnalyticsOverview> => {
+    await delay(800);
+    return {
+      totalVisitors: 12458,
+      activeSchemes: mockData.schemes.filter((s) => s.panchayatId === panchayatId).length,
+      announcements: mockData.announcements.filter((a) => a.panchayatId === panchayatId).length,
+      photoGallery: mockData.gallery.filter((g) => g.panchayatId === panchayatId).length,
+      totalPosts: mockData.posts.filter((p) => p.panchayatId === panchayatId).length,
+      totalComments: mockData.comments.filter((c) => c.panchayatId === panchayatId).length,
+      totalLikes: mockData.posts.filter((p) => p.panchayatId === panchayatId).reduce((sum, p) => sum + p.likes, 0),
+    };
+  },
+
+  getPageViews: async (panchayatId: string): Promise<PageView[]> => {
+    await delay(800);
+    const dates = Array.from({ length: 30 }, (_, i) => {
+      const date = new Date();
+      date.setDate(date.getDate() - (29 - i));
+      return date.toISOString().split('T')[0];
+    });
+    return dates.map((date) => ({
+      date,
+      views: Math.floor(Math.random() * 500) + 100,
+      uniqueVisitors: Math.floor(Math.random() * 200) + 50,
+    }));
+  },
+
+  getPopularPosts: async (panchayatId: string): Promise<PopularPost[]> => {
+    await delay(800);
+    return mockData.posts
+      .filter((p) => p.panchayatId === panchayatId)
+      .map((p) => ({
+        id: p.id,
+        title: p.content.substring(0, 50) + '...',
+        views: Math.floor(Math.random() * 1000) + 100,
+        likes: p.likes,
+        comments: p.comments,
+      }))
+      .sort((a, b) => b.views - a.views)
+      .slice(0, 10);
+  },
+
+  getEngagement: async (panchayatId: string): Promise<EngagementStats> => {
+    await delay(800);
+    const posts = mockData.posts.filter((p) => p.panchayatId === panchayatId);
+    return {
+      totalLikes: posts.reduce((sum, p) => sum + p.likes, 0),
+      totalComments: posts.reduce((sum, p) => sum + p.comments, 0),
+      totalShares: posts.reduce((sum, p) => sum + p.shares, 0),
+      averageEngagement: posts.length > 0 ? (posts.reduce((sum, p) => sum + p.likes + p.comments, 0) / posts.length) : 0,
+      topEngagedPosts: posts
+        .map((p) => ({
+          id: p.id,
+          title: p.content.substring(0, 50) + '...',
+          views: Math.floor(Math.random() * 1000) + 100,
+          likes: p.likes,
+          comments: p.comments,
+        }))
+        .sort((a, b) => b.likes + b.comments - (a.likes + a.comments))
+        .slice(0, 5),
+    };
+  },
+};
+
+/**
+ * Super Admin API
+ */
+export const superAdminAPI = {
+  // Panchayat Management
+  createPanchayat: async (data: {
+    name: string;
+    subdomain: string;
+    district: string;
+    state: string;
+    block: string;
+    population: number;
+    area: string;
+    wards: number;
+  }) => {
+    await delay(1500);
+    const newPanchayat: SuperAdminPanchayat = {
+      id: `panchayat-${Date.now()}`,
+      name: data.name,
+      subdomain: data.subdomain,
+      district: data.district,
+      state: data.state,
+      status: 'active',
+      adminCount: 0,
+      createdAt: new Date().toISOString(),
+    };
+    (mockData.panchayats as any[]).push({
+      ...newPanchayat,
+      block: data.block,
+      population: data.population,
+      area: data.area,
+      wards: data.wards,
+      established: new Date().getFullYear(),
+    });
+    return newPanchayat;
+  },
+
+  getAllPanchayats: async (filters?: { status?: PanchayatStatus; search?: string }): Promise<SuperAdminPanchayat[]> => {
+    await delay(800);
+    let panchayats = mockData.panchayats.map((p) => ({
+      id: p.id,
+      name: p.name,
+      subdomain: p.subdomain,
+      district: p.district,
+      state: p.state,
+      status: 'active' as PanchayatStatus,
+      adminCount: mockData.teamMembers.filter((tm) => tm.panchayatId === p.id).length,
+      createdAt: '2024-01-01T00:00:00Z',
+    }));
+    if (filters?.status) {
+      panchayats = panchayats.filter((p) => p.status === filters.status);
+    }
+    if (filters?.search) {
+      const search = filters.search.toLowerCase();
+      panchayats = panchayats.filter((p) => 
+        p.name.toLowerCase().includes(search) || 
+        p.subdomain.toLowerCase().includes(search) ||
+        p.district.toLowerCase().includes(search)
+      );
+    }
+    return panchayats;
+  },
+
+  getPanchayatById: async (id: string): Promise<SuperAdminPanchayat> => {
+    await delay(600);
+    const panchayat = mockData.panchayats.find((p) => p.id === id);
+    if (!panchayat) throw new Error('Panchayat not found');
+    return {
+      id: panchayat.id,
+      name: panchayat.name,
+      subdomain: panchayat.subdomain,
+      district: panchayat.district,
+      state: panchayat.state,
+      status: 'active',
+      adminCount: mockData.teamMembers.filter((tm) => tm.panchayatId === id).length,
+      createdAt: '2024-01-01T00:00:00Z',
+    };
+  },
+
+  updatePanchayat: async (id: string, updates: Partial<SuperAdminPanchayat>) => {
+    await delay(800);
+    const index = mockData.panchayats.findIndex((p) => p.id === id);
+    if (index === -1) throw new Error('Panchayat not found');
+    Object.assign(mockData.panchayats[index], updates);
+    return mockData.panchayats[index];
+  },
+
+  updatePanchayatStatus: async (id: string, status: PanchayatStatus) => {
+    await delay(600);
+    const panchayat = mockData.panchayats.find((p) => p.id === id);
+    if (!panchayat) throw new Error('Panchayat not found');
+    return { success: true, status };
+  },
+
+  deletePanchayat: async (id: string) => {
+    await delay(600);
+    const index = mockData.panchayats.findIndex((p) => p.id === id);
+    if (index === -1) throw new Error('Panchayat not found');
+    mockData.panchayats.splice(index, 1);
+    return { success: true };
+  },
+
+  getPanchayatStats: async (id: string) => {
+    await delay(800);
+    return {
+      totalPosts: mockData.posts.filter((p) => p.panchayatId === id).length,
+      totalSchemes: mockData.schemes.filter((s) => s.panchayatId === id).length,
+      totalAnnouncements: mockData.announcements.filter((a) => a.panchayatId === id).length,
+      adminCount: mockData.teamMembers.filter((tm) => tm.panchayatId === id).length,
+      totalVisitors: 12458,
+    };
+  },
+
+  // User Management
+  getAllUsers: async (): Promise<AdminUser[]> => {
+    await delay(800);
+    return [...mockData.adminUsers];
+  },
+
+  getUserById: async (id: string): Promise<AdminUser> => {
+    await delay(600);
+    const user = mockData.adminUsers.find((u) => u.id === id);
+    if (!user) throw new Error('User not found');
+    return user;
+  },
+
+  updateUserStatus: async (id: string, status: UserStatus) => {
+    await delay(600);
+    const user = mockData.adminUsers.find((u) => u.id === id);
+    if (!user) throw new Error('User not found');
+    user.status = status;
+    return user;
+  },
+
+  getPanchayatAdmins: async (panchayatId: string): Promise<TeamMember[]> => {
+    await delay(600);
+    return mockData.teamMembers.filter((tm) => tm.panchayatId === panchayatId);
+  },
+
+  // System Analytics
+  getSystemAnalytics: async () => {
+    await delay(800);
+    return {
+      totalPanchayats: mockData.panchayats.length,
+      totalUsers: mockData.adminUsers.length,
+      activePanchayats: mockData.panchayats.length,
+      totalPosts: mockData.posts.length,
+      totalSchemes: mockData.schemes.length,
+    };
+  },
+
+  getPanchayatAnalytics: async (panchayatId: string) => {
+    await delay(800);
+    return {
+      posts: mockData.posts.filter((p) => p.panchayatId === panchayatId).length,
+      schemes: mockData.schemes.filter((s) => s.panchayatId === panchayatId).length,
+      announcements: mockData.announcements.filter((a) => a.panchayatId === panchayatId).length,
+      visitors: 12458,
+    };
+  },
+
+  getAuditLogs: async (): Promise<AuditLog[]> => {
+    await delay(800);
+    return [...mockData.auditLogs];
+  },
+};
+
+/**
+ * Team Management API
+ */
+export const teamAPI = {
+  addMember: async (panchayatId: string, data: { name: string; email: string; role: string }) => {
+    await delay(1000);
+    // Check max 4 constraint
+    const existingMembers = mockData.teamMembers.filter((tm) => tm.panchayatId === panchayatId);
+    if (existingMembers.length >= 4) {
+      throw new Error('Maximum 4 admins allowed per panchayat');
+    }
+    const newMember: TeamMember = {
+      id: `team-${Date.now()}`,
+      panchayatId,
+      name: data.name,
+      email: data.email,
+      role: data.role,
+      status: 'active',
+      createdAt: new Date().toISOString(),
+    };
+    mockData.teamMembers.push(newMember);
+    return newMember;
+  },
+
+  getAllMembers: async (panchayatId: string): Promise<TeamMember[]> => {
+    await delay(700);
+    return mockData.teamMembers.filter((tm) => tm.panchayatId === panchayatId);
+  },
+
+  removeMember: async (userId: string) => {
+    await delay(600);
+    const index = mockData.teamMembers.findIndex((tm) => tm.id === userId);
+    if (index === -1) throw new Error('Team member not found');
+    mockData.teamMembers.splice(index, 1);
+    return { success: true };
+  },
+
+  updateMemberStatus: async (userId: string, status: UserStatus) => {
+    await delay(600);
+    const member = mockData.teamMembers.find((tm) => tm.id === userId);
+    if (!member) throw new Error('Team member not found');
+    member.status = status;
+    return member;
+  },
+};
+
+/**
+ * Documents API
+ */
+export const documentsAPI = {
+  upload: async (panchayatId: string, file: File, data: { title: string; description?: string; category: string; isPublic: boolean }): Promise<Document> => {
+    await delay(2000);
+    const newDoc: Document = {
+      id: `doc-${Date.now()}`,
+      panchayatId,
+      title: data.title,
+      description: data.description,
+      category: data.category,
+      fileUrl: URL.createObjectURL(file),
+      fileName: file.name,
+      fileSize: file.size,
+      fileType: file.type,
+      uploadedBy: 'Current User',
+      uploadedAt: new Date().toISOString(),
+      isPublic: data.isPublic,
+    };
+    mockData.documents.push(newDoc);
+    return newDoc;
+  },
+
+  getAll: async (panchayatId: string, category?: string): Promise<Document[]> => {
+    await delay(700);
+    let docs = mockData.documents.filter((d) => d.panchayatId === panchayatId);
+    if (category) {
+      docs = docs.filter((d) => d.category === category);
+    }
+    return docs;
+  },
+
+  getById: async (id: string): Promise<Document> => {
+    await delay(500);
+    const doc = mockData.documents.find((d) => d.id === id);
+    if (!doc) throw new Error('Document not found');
+    return doc;
+  },
+
+  update: async (id: string, updates: Partial<Document>): Promise<Document> => {
+    await delay(800);
+    const index = mockData.documents.findIndex((d) => d.id === id);
+    if (index === -1) throw new Error('Document not found');
+    Object.assign(mockData.documents[index], updates);
+    return mockData.documents[index];
+  },
+
+  delete: async (id: string) => {
+    await delay(600);
+    const index = mockData.documents.findIndex((d) => d.id === id);
+    if (index === -1) throw new Error('Document not found');
+    mockData.documents.splice(index, 1);
+    return { success: true };
+  },
+};
+
+/**
+ * Comments API
+ */
+export const commentsAPI = {
+  getByPost: async (postId: string): Promise<Comment[]> => {
+    await delay(700);
+    return mockData.comments.filter((c) => c.postId === postId);
+  },
+
+  create: async (panchayatId: string, postId: string, data: { author: string; authorEmail?: string; content: string }): Promise<Comment> => {
+    await delay(1000);
+    const newComment: Comment = {
+      id: `comment-${Date.now()}`,
+      postId,
+      panchayatId,
+      author: data.author,
+      authorEmail: data.authorEmail,
+      content: data.content,
+      status: 'pending',
+      createdAt: new Date().toISOString(),
+    };
+    mockData.comments.push(newComment);
+    // Update post comment count
+    const post = mockData.posts.find((p) => p.id === postId);
+    if (post) post.comments += 1;
+    return newComment;
+  },
+
+  approve: async (postId: string, commentId: string) => {
+    await delay(600);
+    const comment = mockData.comments.find((c) => c.id === commentId && c.postId === postId);
+    if (!comment) throw new Error('Comment not found');
+    comment.status = 'approved';
+    comment.approvedBy = 'Current Admin';
+    comment.approvedAt = new Date().toISOString();
+    return comment;
+  },
+
+  delete: async (postId: string, commentId: string) => {
+    await delay(600);
+    const index = mockData.comments.findIndex((c) => c.id === commentId && c.postId === postId);
+    if (index === -1) throw new Error('Comment not found');
+    mockData.comments.splice(index, 1);
+    // Update post comment count
+    const post = mockData.posts.find((p) => p.id === postId);
+    if (post && post.comments > 0) post.comments -= 1;
+    return { success: true };
+  },
+};
+
+/**
+ * Albums API
+ */
+export const albumsAPI = {
+  create: async (panchayatId: string, data: { title: string; description?: string; coverImage?: string }): Promise<Album> => {
+    await delay(1000);
+    const newAlbum: Album = {
+      id: `album-${Date.now()}`,
+      panchayatId,
+      title: data.title,
+      description: data.description,
+      coverImage: data.coverImage,
+      imageCount: 0,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString(),
+    };
+    mockData.albums.push(newAlbum);
+    return newAlbum;
+  },
+
+  getAll: async (panchayatId: string): Promise<Album[]> => {
+    await delay(700);
+    return mockData.albums.filter((a) => a.panchayatId === panchayatId);
+  },
+
+  getById: async (id: string): Promise<Album> => {
+    await delay(500);
+    const album = mockData.albums.find((a) => a.id === id);
+    if (!album) throw new Error('Album not found');
+    return album;
+  },
+
+  update: async (id: string, updates: Partial<Album>): Promise<Album> => {
+    await delay(800);
+    const index = mockData.albums.findIndex((a) => a.id === id);
+    if (index === -1) throw new Error('Album not found');
+    Object.assign(mockData.albums[index], { ...updates, updatedAt: new Date().toISOString() });
+    return mockData.albums[index];
+  },
+
+  delete: async (id: string) => {
+    await delay(600);
+    const index = mockData.albums.findIndex((a) => a.id === id);
+    if (index === -1) throw new Error('Album not found');
+    mockData.albums.splice(index, 1);
+    return { success: true };
+  },
+};
+
+/**
+ * Settings API
+ */
+export const settingsAPI = {
+  get: async (panchayatId: string): Promise<PanchayatSettings> => {
+    await delay(700);
+    const settings = mockData.settings.find((s) => s.panchayatId === panchayatId);
+    if (!settings) throw new Error('Settings not found');
+    return settings;
+  },
+
+  update: async (panchayatId: string, updates: Partial<PanchayatSettings>): Promise<PanchayatSettings> => {
+    await delay(1000);
+    const index = mockData.settings.findIndex((s) => s.panchayatId === panchayatId);
+    if (index === -1) throw new Error('Settings not found');
+    Object.assign(mockData.settings[index], { ...updates, updatedAt: new Date().toISOString() });
+    return mockData.settings[index];
+  },
+
+  updateHero: async (panchayatId: string, hero: PanchayatSettings['hero']): Promise<PanchayatSettings> => {
+    await delay(1000);
+    const index = mockData.settings.findIndex((s) => s.panchayatId === panchayatId);
+    if (index === -1) throw new Error('Settings not found');
+    mockData.settings[index].hero = hero;
+    mockData.settings[index].updatedAt = new Date().toISOString();
+    return mockData.settings[index];
+  },
+
+  updateAbout: async (panchayatId: string, about: PanchayatSettings['about']): Promise<PanchayatSettings> => {
+    await delay(1000);
+    const index = mockData.settings.findIndex((s) => s.panchayatId === panchayatId);
+    if (index === -1) throw new Error('Settings not found');
+    mockData.settings[index].about = about;
+    mockData.settings[index].updatedAt = new Date().toISOString();
+    return mockData.settings[index];
+  },
+
+  updateContact: async (panchayatId: string, contact: PanchayatSettings['contact']): Promise<PanchayatSettings> => {
+    await delay(1000);
+    const index = mockData.settings.findIndex((s) => s.panchayatId === panchayatId);
+    if (index === -1) throw new Error('Settings not found');
+    mockData.settings[index].contact = contact;
+    mockData.settings[index].updatedAt = new Date().toISOString();
+    return mockData.settings[index];
+  },
+
+  uploadLogo: async (panchayatId: string, file: File): Promise<PanchayatSettings> => {
+    await delay(2000);
+    const index = mockData.settings.findIndex((s) => s.panchayatId === panchayatId);
+    if (index === -1) throw new Error('Settings not found');
+    mockData.settings[index].logo = URL.createObjectURL(file);
+    mockData.settings[index].updatedAt = new Date().toISOString();
+    return mockData.settings[index];
+  },
+
+  uploadHeroImage: async (panchayatId: string, file: File): Promise<PanchayatSettings> => {
+    await delay(2000);
+    const index = mockData.settings.findIndex((s) => s.panchayatId === panchayatId);
+    if (index === -1) throw new Error('Settings not found');
+    mockData.settings[index].hero.image = URL.createObjectURL(file);
+    mockData.settings[index].updatedAt = new Date().toISOString();
+    return mockData.settings[index];
+  },
+};
+
+/**
+ * Enhanced Auth API
+ */
+export const authAPIEnhanced = {
+  ...authAPI,
+  
+  register: async (data: { name: string; email: string; password: string; panchayatId: string }) => {
+    await delay(1500);
+    const newUser = {
+      id: `user-${Date.now()}`,
+      email: data.email,
+      name: data.name,
+      role: 'panchayat_admin' as const,
+      panchayatId: data.panchayatId,
+      panchayatName: 'New Panchayat',
+      status: 'active' as const,
+      createdAt: new Date().toISOString(),
+    };
+    mockData.adminUsers.push(newUser);
+    const { password: _, ...userWithoutPassword } = newUser as any;
+    const token = `mock-token-${newUser.id}-${Date.now()}`;
+    return { user: userWithoutPassword, token };
+  },
+
+  forgotPassword: async (email: string) => {
+    await delay(1000);
+    const user = mockData.adminUsers.find((u) => u.email === email);
+    if (!user) {
+      // Don't reveal if user exists for security
+      return { success: true, message: 'If the email exists, a password reset link has been sent.' };
+    }
+    return { success: true, message: 'Password reset link sent to your email.' };
+  },
+
+  resetPassword: async (token: string, newPassword: string) => {
+    await delay(1000);
+    // In real implementation, validate token
+    return { success: true, message: 'Password reset successfully.' };
+  },
+
+  updateProfile: async (updates: { name?: string; email?: string }) => {
+    await delay(800);
+    const token = localStorage.getItem('authToken');
+    if (!token) throw new Error('Not authenticated');
+    const userId = token.split('-')[2];
+    const user = mockData.adminUsers.find((u) => u.id === userId);
+    if (!user) throw new Error('User not found');
+    Object.assign(user, updates);
+    return user;
+  },
+
+  changePassword: async (currentPassword: string, newPassword: string) => {
+    await delay(800);
+    const token = localStorage.getItem('authToken');
+    if (!token) throw new Error('Not authenticated');
+    // In real implementation, verify current password
+    return { success: true, message: 'Password changed successfully.' };
+  },
+};
+
+// Update posts API to support status
+export const postsAPIEnhanced = {
+  ...postsAPI,
+  
+  publish: async (id: string) => {
+    await delay(600);
+    const post = mockData.posts.find((p) => p.id === id);
+    if (!post) throw new Error('Post not found');
+    return { ...post, status: 'published' };
+  },
+
+  getLikes: async (id: string) => {
+    await delay(500);
+    const post = mockData.posts.find((p) => p.id === id);
+    if (!post) throw new Error('Post not found');
+    return { likes: post.likes };
+  },
+};
+
+// Update announcements API
+export const announcementsAPIEnhanced = {
+  ...announcementsAPI,
+  
+  getById: async (id: string): Promise<Announcement> => {
+    await delay(500);
+    const announcement = mockData.announcements.find((a) => a.id === id);
+    if (!announcement) throw new Error('Announcement not found');
+    return announcement;
+  },
+
+  updateStatus: async (id: string, status: 'Published' | 'Draft') => {
+    await delay(600);
+    const announcement = mockData.announcements.find((a) => a.id === id);
+    if (!announcement) throw new Error('Announcement not found');
+    announcement.status = status;
+    return announcement;
+  },
+};
+
+// Update schemes API
+export const schemesAPIEnhanced = {
+  ...schemesAPI,
+  
+  updateStatus: async (id: string, status: 'Active' | 'Completed' | 'Pending') => {
+    await delay(600);
+    const scheme = mockData.schemes.find((s) => s.id === id);
+    if (!scheme) throw new Error('Scheme not found');
+    scheme.status = status;
+    return scheme;
+  },
+};
+
+// Update gallery API
+export const galleryAPIEnhanced = {
+  ...galleryAPI,
+  
+  update: async (id: string, updates: Partial<GalleryItem>): Promise<GalleryItem> => {
+    await delay(800);
+    const index = mockData.gallery.findIndex((g) => g.id === id);
+    if (index === -1) throw new Error('Gallery item not found');
+    Object.assign(mockData.gallery[index], updates);
+    return mockData.gallery[index];
   },
 };
 

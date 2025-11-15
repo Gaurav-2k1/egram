@@ -41,6 +41,10 @@ export default {
           DEFAULT: 'var(--card)',
           foreground: 'var(--card-foreground)',
         },
+        brand: {
+          orange: '#FF9933',
+          green: '#138808',
+        },
       },
       borderRadius: {
         lg: 'var(--radius)',

@@ -155,3 +155,163 @@ export interface ActivePanchayat {
   population: number;
 }
 
+// Admin & Team Management Types
+export type UserRole = "super_admin" | "panchayat_admin" | "user";
+export type UserStatus = "active" | "inactive" | "suspended";
+export type PanchayatStatus = "active" | "inactive" | "suspended";
+
+export interface AdminUser {
+  id: string;
+  email: string;
+  name: string;
+  role: UserRole;
+  panchayatId?: string;
+  panchayatName?: string;
+  status: UserStatus;
+  createdAt: string;
+  lastLogin?: string;
+}
+
+export interface TeamMember {
+  id: string;
+  panchayatId: string;
+  name: string;
+  email: string;
+  role: string;
+  status: UserStatus;
+  createdAt: string;
+  lastActive?: string;
+}
+
+// Document Types
+export interface Document {
+  id: string;
+  panchayatId: string;
+  title: string;
+  description?: string;
+  category: string;
+  fileUrl: string;
+  fileName: string;
+  fileSize: number;
+  fileType: string;
+  uploadedBy: string;
+  uploadedAt: string;
+  isPublic: boolean;
+}
+
+// Comment Types
+export interface Comment {
+  id: string;
+  postId: string;
+  panchayatId: string;
+  author: string;
+  authorEmail?: string;
+  content: string;
+  status: "pending" | "approved" | "rejected";
+  createdAt: string;
+  approvedBy?: string;
+  approvedAt?: string;
+}
+
+// Gallery Album Types
+export interface Album {
+  id: string;
+  panchayatId: string;
+  title: string;
+  description?: string;
+  coverImage?: string;
+  imageCount: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+// Settings Types
+export interface PanchayatSettings {
+  id: string;
+  panchayatId: string;
+  hero: {
+    title: string;
+    subtitle: string;
+    description: string;
+    image?: string;
+  };
+  about: {
+    title: string;
+    content: string;
+    features: string[];
+  };
+  contact: {
+    address: string;
+    phone: string;
+    email: string;
+    officeHours: string;
+  };
+  logo?: string;
+  updatedAt: string;
+}
+
+// Analytics Types
+export interface AnalyticsOverview {
+  totalVisitors: number;
+  activeSchemes: number;
+  announcements: number;
+  photoGallery: number;
+  totalPosts: number;
+  totalComments: number;
+  totalLikes: number;
+}
+
+export interface PageView {
+  date: string;
+  views: number;
+  uniqueVisitors: number;
+}
+
+export interface PopularPost {
+  id: string;
+  title: string;
+  views: number;
+  likes: number;
+  comments: number;
+}
+
+export interface EngagementStats {
+  totalLikes: number;
+  totalComments: number;
+  totalShares: number;
+  averageEngagement: number;
+  topEngagedPosts: PopularPost[];
+}
+
+// Super Admin Types
+export interface SuperAdminPanchayat {
+  id: string;
+  name: string;
+  subdomain: string;
+  district: string;
+  state: string;
+  status: PanchayatStatus;
+  adminCount: number;
+  createdAt: string;
+  lastActive?: string;
+}
+
+export interface AuditLog {
+  id: string;
+  userId: string;
+  userName: string;
+  action: string;
+  resource: string;
+  resourceId: string;
+  details?: Record<string, unknown>;
+  ipAddress?: string;
+  createdAt: string;
+}
+
+// Post Status
+export type PostStatus = "draft" | "published";
+
+export interface PostWithStatus extends Post {
+  status?: PostStatus;
+}
+

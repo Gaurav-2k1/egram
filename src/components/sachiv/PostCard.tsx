@@ -1,17 +1,17 @@
 import { useState } from "react";
 import { Heart, MessageCircle, Share2, MoreVertical, Play } from "lucide-react";
-import { Card, CardContent } from "./ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
-import { Button } from "./ui/button";
-import { Separator } from "./ui/separator";
-import { ImageWithFallback } from "./figma/ImageWithFallback";
+import { Card, CardContent } from "../ui/card";
+import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
+import { Button } from "../ui/button";
+import { Separator } from "../ui/separator";
+import { ImageWithFallback } from "../figma/ImageWithFallback";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "./ui/dropdown-menu";
-import type { Post } from "../types";
+} from "../ui/dropdown-menu";
+import type { Post } from "../../types";
 
 interface PostCardProps {
   post: Post;
