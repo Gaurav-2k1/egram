@@ -312,7 +312,11 @@ export function LandingPage() {
               <div className="col-span-4 text-center text-[#666]">No panchayats available</div>
             ) : (
               activePanchayats.map((panchayat, index) => (
-              <Card key={index} className="border border-[#E5E5E5] bg-white shadow-sm transition-all hover:shadow-md hover:scale-105 cursor-pointer">
+              <Card 
+                key={index} 
+                className="border border-[#E5E5E5] bg-white shadow-sm transition-all hover:shadow-md hover:scale-105 cursor-pointer"
+                onClick={() => navigate(`/panchayat/${panchayat.subdomain}`)}
+              >
                 <CardHeader>
                   <div className="mb-2 flex items-center gap-2">
                     <MapPin className="h-4 w-4 text-[#FF9933]" />
@@ -338,7 +342,12 @@ export function LandingPage() {
             )}
           </div>
           <div className="mt-12 text-center">
-            <Button variant="outline" size="lg" className="border-[#E5E5E5] text-[#1B2B5E] hover:bg-[#F5F5F5]">
+            <Button 
+              variant="outline" 
+              size="lg" 
+              className="border-[#E5E5E5] text-[#1B2B5E] hover:bg-[#F5F5F5]"
+              onClick={() => navigate("/panchayats")}
+            >
               View All Panchayats
             </Button>
           </div>

@@ -9,6 +9,7 @@ import { SuccessPage } from '../pages/SuccessPage';
 import { LandingPage } from '@/components/main/LandingPage';
 import { RegistrationFlow } from '@/components/main/RegistrationFlow';
 import { PanchayatWebsite } from '@/components/public/PanchayatWebsite';
+import { AllPanchayatsPage } from '@/components/main/AllPanchayatsPage';
 import { Login } from '@/components/main/Login';
 import { ForgotPassword } from '@/components/main/ForgotPassword';
 import { ResetPassword } from '@/components/main/ResetPassword';
@@ -22,6 +23,7 @@ export function AppRoutes() {
       {/* Public Routes */}
       <Route path="/" element={<LandingPage />} />
       <Route path="/registration" element={<RegistrationFlow />} />
+      <Route path="/panchayats" element={<AllPanchayatsPage />} />
       <Route path="/panchayat/:subdomain" element={<PanchayatWebsite />} />
       <Route path="/panchayat-demo" element={<PanchayatWebsite />} />
       <Route path="/login" element={<Login />} />

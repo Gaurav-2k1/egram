@@ -153,6 +153,7 @@ export interface ActivePanchayat {
   district: string;
   schemes: number;
   population: number;
+  subdomain: string;
 }
 
 // Admin & Team Management Types

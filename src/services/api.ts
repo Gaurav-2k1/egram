@@ -495,6 +495,7 @@ export const panchayatAPI = {
       district: `${p.district}, ${p.state}`,
       schemes: mockData.schemes.filter((s) => s.panchayatId === p.id).length,
       population: p.population,
+      subdomain: p.subdomain,
     }));
   },
 

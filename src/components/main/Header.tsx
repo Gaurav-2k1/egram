@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Menu, Globe, User, Search, Calendar, Accessibility } from "lucide-react";
 import { Button } from "../ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
@@ -21,9 +21,10 @@ interface HeaderProps {
 export function Header({ variant = "platform", panchayatName, onLanguageChange }: HeaderProps) {
 
   const {user} = useAuth();
+  const location = useLocation();
   
-  // Only show header when user is not authenticated (user is null)
-  if (user !== null) {
+  // Don't show header if user is authenticated OR if on dashboard/admin routes
+  if (user !== null || location.pathname === '/admin' || location.pathname === '/dashboard') {
     return null;
   }
   
