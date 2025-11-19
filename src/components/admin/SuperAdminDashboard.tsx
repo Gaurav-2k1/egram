@@ -107,7 +107,6 @@ export function SuperAdminDashboard() {
       ]);
 
       setPanchayats(panchayatsData);
-      console.log(panchayatsData);
       setUsers(usersData);
       setAnalytics(analyticsData);
       setAuditLogs(logsData);

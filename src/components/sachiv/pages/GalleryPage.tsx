@@ -31,7 +31,7 @@ export function GalleryPage() {
   const [albums, setAlbums] = useState<Album[]>([]);
   const [loading, setLoading] = useState(true);
   const [loadingAlbums, setLoadingAlbums] = useState(true);
-  console.log("Albums:", loadingAlbums);
+
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingImage, setEditingImage] = useState<GalleryItem | null>(null);
   const [formData, setFormData] = useState({

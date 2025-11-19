@@ -1,0 +1,135 @@
+{
+  "nav": {
+    "home": "Home",
+    "features": "Features",
+    "panchayats": "Panchayats",
+    "about": "About",
+    "contact": "Contact",
+    "schemes": "Schemes",
+    "projects": "Projects",
+    "gallery": "Gallery",
+    "login": "Sachiv Login",
+    "dashboard": "Go to Dashboard",
+    "language": "Language"
+  },
+  "hero": {
+    "badge": "Government of India Initiative",
+    "title": "Empowering",
+    "titleHighlight1": "Gram Panchayats",
+    "titleHighlight2": "Digital India",
+    "titleFor": "for",
+    "subtitle": "Create a professional website for your Gram Panchayat in minutes. Share schemes, updates, and connect with citizens - all in one platform.",
+    "cta": "Register Your Panchayat",
+    "learnMore": "Learn More",
+    "searchPlaceholder": "Search your Panchayat by name or district...",
+    "searchButton": "Search"
+  },
+  "stats": {
+    "activePanchayats": "Active Panchayats",
+    "citizensReached": "Citizens Reached",
+    "schemesImplemented": "Schemes Implemented",
+    "satisfactionRate": "Satisfaction Rate"
+  },
+  "features": {
+    "title": "Why Choose",
+    "titleHighlight": "e-GramSeva",
+    "subtitle": "Built specifically for Indian Gram Panchayats with features that matter most for rural governance and citizen engagement.",
+    "easyManagement": {
+      "title": "Easy Management",
+      "description": "Intuitive dashboard for Panchayat Sachivs to manage content, schemes, and updates effortlessly."
+    },
+    "quickSetup": {
+      "title": "Quick Setup",
+      "description": "Get your Panchayat website live in minutes with custom subdomain and ready-to-use templates."
+    },
+    "analytics": {
+      "title": "Real-time Analytics",
+      "description": "Track visitor engagement, scheme reach, and citizen interaction with comprehensive analytics."
+    }
+  },
+  "schemes": {
+    "title": "Government Schemes",
+    "subtitle": "Access information about various government welfare schemes",
+    "searchPlaceholder": "Search schemes...",
+    "pmAwas": {
+      "title": "PM Awas Yojana",
+      "description": "Housing for all by 2024"
+    },
+    "mgnrega": {
+      "title": "MGNREGA",
+      "description": "Employment guarantee scheme"
+    },
+    "pmKisan": {
+      "title": "PM Kisan",
+      "description": "Direct income support"
+    }
+  },
+  "directories": {
+    "title": "Directories",
+    "subtitle": "Quick access to important information and services",
+    "whosWho": {
+      "title": "Who's Who",
+      "description": "Key personnel"
+    },
+    "contact": {
+      "title": "Contact Directory",
+      "description": "Important contacts"
+    },
+    "web": {
+      "title": "Web Directory",
+      "description": "Related websites"
+    },
+    "resources": {
+      "title": "Resources",
+      "description": "Documents & guides"
+    }
+  },
+  "myGov": {
+    "title": "MyGov Connect",
+    "subtitle": "Participate in governance and share your ideas with the government",
+    "shareIdeas": {
+      "title": "Share Ideas",
+      "description": "Contribute your suggestions"
+    },
+    "participate": {
+      "title": "Participate",
+      "description": "Join discussions and polls"
+    },
+    "engage": {
+      "title": "Engage",
+      "description": "Connect with government initiatives"
+    }
+  },
+  "cta": {
+    "title": "Ready to Get Started?",
+    "subtitle": "Register your Gram Panchayat today and create a digital presence that empowers your community and promotes transparent governance.",
+    "button": "Register Now - It's Free"
+  },
+  "footer": {
+    "about": "e-GramSeva",
+    "aboutText": "Empowering rural India through digital transformation. Connecting Gram Panchayats with citizens for transparent governance and better service delivery.",
+    "quickLinks": "Quick Links",
+    "govLinks": "Government Links",
+    "contact": "Contact",
+    "email": "info@egramseva.gov.in",
+    "phone": "1800-XXX-XXXX (Toll Free)",
+    "address": "Ministry of Panchayati Raj, New Delhi",
+    "copyright": "© 2025 e-GramSeva. All rights reserved. | Designed following UX4G standards",
+    "browserInfo": "Best viewed in Chrome, Firefox, Safari"
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "backToHome": "Back to Home",
+    "viewAll": "View All",
+    "readMore": "Read More",
+    "submit": "Submit",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "close": "Close"
+  }
+}
+

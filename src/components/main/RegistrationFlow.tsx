@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, ArrowRight, Check, Upload, FileText, User, MapPin } from "lucide-react";
+import { ArrowLeft, ArrowRight, Check, User, MapPin } from "lucide-react";
 import { Button } from "../ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui/card";
 import { Input } from "../ui/input";
@@ -12,10 +12,6 @@ import { Badge } from "../ui/badge";
 import { panchayatAPI } from "../../services/api";
 import { toast } from "sonner";
 import type { RegistrationFormData } from "../../types";
-
-// Debug: Log panchayatAPI to verify register method exists
-console.log('panchayatAPI:', panchayatAPI);
-console.log('panchayatAPI.register:', panchayatAPI.register);
 
 export function RegistrationFlow() {
   const navigate = useNavigate();
@@ -46,15 +42,49 @@ export function RegistrationFlow() {
     acceptTerms: false,
   });
 
-  const totalSteps = 4;
+  const totalSteps = 3;
   const progress = (step / totalSteps) * 100;
+
+  // Scroll to top when component mounts
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, []);
 
   const steps = [
     { number: 1, title: "Personal Details", icon: User },
     { number: 2, title: "Panchayat Details", icon: MapPin },
-    { number: 3, title: "Document Upload", icon: FileText },
-    { number: 4, title: "Review & Submit", icon: Check },
+    { number: 3, title: "Review & Submit", icon: Check },
   ];
+
+  // Validation for each step
+  const isStep1Valid = () => {
+    const phoneDigits = formData.phone?.replace(/\D/g, '') || '';
+    return (
+      formData.sachivName.trim() !== "" &&
+      formData.designation !== "" &&
+      formData.email.trim() !== "" &&
+      phoneDigits.length === 10 &&
+      formData.password.trim() !== "" &&
+      formData.confirmPassword.trim() !== "" &&
+      formData.password === formData.confirmPassword
+    );
+  };
+
+  const isStep2Valid = () => {
+    return (
+      formData.panchayatName.trim() !== "" &&
+      formData.state !== "" &&
+      formData.district.trim() !== "" &&
+      formData.block.trim() !== "" &&
+      formData.subdomain.trim() !== ""
+    );
+  };
+
+  const isCurrentStepValid = () => {
+    if (step === 1) return isStep1Valid();
+    if (step === 2) return isStep2Valid();
+    return true;
+  };
 
   const handleNext = () => {
     if (step < totalSteps) setStep(step + 1);
@@ -179,38 +209,6 @@ export function RegistrationFlow() {
           <Progress value={progress} className="h-2" />
         </div>
 
-        {/* Step Indicators */}
-        <div className="mb-8 grid grid-cols-2 gap-4 lg:grid-cols-4">
-          {steps.map((s) => (
-            <div
-              key={s.number}
-              className={`flex items-center gap-3 rounded-lg border p-4 ${
-                s.number === step
-                  ? "border-[#FF9933] bg-[#FF9933]/5"
-                  : s.number < step
-                  ? "border-[#138808] bg-[#138808]/5"
-                  : "border-border bg-white"
-              }`}
-            >
-              <div
-                className={`flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full ${
-                  s.number === step
-                    ? "bg-[#FF9933] text-white"
-                    : s.number < step
-                    ? "bg-[#138808] text-white"
-                    : "bg-muted text-muted-foreground"
-                }`}
-              >
-                {s.number < step ? <Check className="h-5 w-5" /> : <s.icon className="h-5 w-5" />}
-              </div>
-              <div className="hidden lg:block">
-                <p className="text-sm text-muted-foreground">Step {s.number}</p>
-                <p style={{ fontSize: "0.875rem" }}>{s.title}</p>
-              </div>
-            </div>
-          ))}
-        </div>
-
         {/* Form Content */}
         <Card className="mx-auto max-w-3xl">
           <CardHeader>
@@ -218,8 +216,7 @@ export function RegistrationFlow() {
             <CardDescription>
               {step === 1 && "Please provide your personal information as Panchayat Sachiv"}
               {step === 2 && "Enter details about your Gram Panchayat"}
-              {step === 3 && "Upload required documents for verification"}
-              {step === 4 && "Review your information before submitting"}
+              {step === 3 && "Review your information before submitting"}
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -364,40 +361,7 @@ export function RegistrationFlow() {
                     />
                   </div>
                 </div>
-                <div className="grid gap-6 md:grid-cols-3">
-                  <div className="space-y-2">
-                    <Label htmlFor="population">Population</Label>
-                    <Input
-                      id="population"
-                      type="number"
-                      placeholder="5000"
-                      value={formData.population}
-                      onChange={(e) =>
-                        setFormData({ ...formData, population: e.target.value })
-                      }
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="area">Area (sq km)</Label>
-                    <Input
-                      id="area"
-                      type="number"
-                      placeholder="25"
-                      value={formData.area}
-                      onChange={(e) => setFormData({ ...formData, area: e.target.value })}
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="wards">Number of Wards</Label>
-                    <Input
-                      id="wards"
-                      type="number"
-                      placeholder="10"
-                      value={formData.wards}
-                      onChange={(e) => setFormData({ ...formData, wards: e.target.value })}
-                    />
-                  </div>
-                </div>
+
                 <div className="space-y-2">
                   <Label htmlFor="subdomain">Choose Your Subdomain *</Label>
                   <div className="flex items-center gap-2">
@@ -421,49 +385,8 @@ export function RegistrationFlow() {
               </div>
             )}
 
-            {/* Step 3: Document Upload */}
+            {/* Step 3: Review */}
             {step === 3 && (
-              <div className="space-y-6">
-                <div className="space-y-2">
-                  <Label htmlFor="idProof">Identity Proof (Aadhar/PAN) *</Label>
-                  <div className="flex items-center gap-4">
-                    <Input id="idProof" type="file" accept=".pdf,.jpg,.jpeg,.png" />
-                    <Upload className="h-5 w-5 text-muted-foreground" />
-                  </div>
-                  <p className="text-sm text-muted-foreground">
-                    PDF, JPG or PNG. Max size: 2MB
-                  </p>
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="appointmentLetter">Appointment Letter *</Label>
-                  <div className="flex items-center gap-4">
-                    <Input id="appointmentLetter" type="file" accept=".pdf" />
-                    <Upload className="h-5 w-5 text-muted-foreground" />
-                  </div>
-                  <p className="text-sm text-muted-foreground">PDF format. Max size: 5MB</p>
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="panchayatCertificate">Panchayat Registration Certificate *</Label>
-                  <div className="flex items-center gap-4">
-                    <Input id="panchayatCertificate" type="file" accept=".pdf" />
-                    <Upload className="h-5 w-5 text-muted-foreground" />
-                  </div>
-                  <p className="text-sm text-muted-foreground">PDF format. Max size: 5MB</p>
-                </div>
-                <div className="rounded-lg border border-[#FF9933] bg-[#FF9933]/5 p-4">
-                  <h4 className="mb-2 text-[#FF9933]">Document Guidelines</h4>
-                  <ul className="space-y-1 text-sm text-muted-foreground">
-                    <li>• All documents must be clear and readable</li>
-                    <li>• Documents should be certified/attested by appropriate authority</li>
-                    <li>• Verification process may take 2-3 business days</li>
-                    <li>• You will receive email notification once verified</li>
-                  </ul>
-                </div>
-              </div>
-            )}
-
-            {/* Step 4: Review */}
-            {step === 4 && (
               <div className="space-y-6">
                 <div className="rounded-lg border bg-muted/50 p-6">
                   <h4 className="mb-4">Personal Information</h4>
@@ -550,7 +473,11 @@ export function RegistrationFlow() {
                 Previous
               </Button>
               {step < totalSteps ? (
-                <Button onClick={handleNext} className="bg-[#FF9933] hover:bg-[#FF9933]/90">
+                <Button
+                  onClick={handleNext}
+                  disabled={!isCurrentStepValid()}
+                  className="bg-[#FF9933] hover:bg-[#FF9933]/90"
+                >
                   Next
                   <ArrowRight className="ml-2 h-4 w-4" />
                 </Button>

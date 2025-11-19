@@ -12,6 +12,7 @@ import {
 
 import type { Language } from "../../types";
 import { useAuth } from "@/contexts/AuthContext";
+import { useTranslation } from "react-i18next";
 
 interface HeaderProps {
   variant?: "platform" | "panchayat";
@@ -25,6 +26,7 @@ export function Header({ variant = "platform", panchayatName, onLanguageChange }
   const location = useLocation();
   const navigate = useNavigate();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const { t } = useTranslation();
 
   // Don't show header on dashboard/admin routes (handled by App.tsx, but double-check here)
   if (location.pathname.startsWith('/admin') || location.pathname.startsWith('/panchayat/dashboard')) {
@@ -75,19 +77,19 @@ export function Header({ variant = "platform", panchayatName, onLanguageChange }
 
   const navigationItems = variant === "platform"
     ? [
-        { label: "Home", href: "#home" },
-        { label: "Features", href: "#features" },
-        { label: "Panchayats", href: "#panchayats" },
-        { label: "About", href: "#about" },
-        { label: "Contact", href: "#contact" },
+        { label: t('nav.home'), href: "#home" },
+        { label: t('nav.features'), href: "#features" },
+        { label: t('nav.panchayats'), href: "#panchayats" },
+        { label: t('nav.about'), href: "#about" },
+        { label: t('nav.contact'), href: "#contact" },
       ]
     : [
-        { label: "Home", href: "#home" },
-        { label: "About", href: "#about" },
-        { label: "Schemes", href: "#schemes" },
-        { label: "Projects", href: "#projects" },
-        { label: "Gallery", href: "#gallery" },
-        { label: "Contact", href: "#contact" },
+        { label: t('nav.home'), href: "#home" },
+        { label: t('nav.about'), href: "#about" },
+        { label: t('nav.schemes'), href: "#schemes" },
+        { label: t('nav.projects'), href: "#projects" },
+        { label: t('nav.gallery'), href: "#gallery" },
+        { label: t('nav.contact'), href: "#contact" },
       ];
 
   return (
@@ -162,6 +164,9 @@ export function Header({ variant = "platform", panchayatName, onLanguageChange }
                 <DropdownMenuItem onClick={() => onLanguageChange?.("en")}>
                   English
                 </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => onLanguageChange?.("mr")}>
+                  मराठी
+                </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => onLanguageChange?.("hi")}>
                   हिंदी
                 </DropdownMenuItem>
@@ -174,7 +179,7 @@ export function Header({ variant = "platform", panchayatName, onLanguageChange }
             {/* Login/Dashboard Button - Desktop only */}
             {variant === "platform" && (
               user ? (
-                <Button 
+                <Button
                   onClick={() => {
                     // Redirect to appropriate dashboard based on user role
                     if (user.role === 'SUPER_ADMIN') {
@@ -186,17 +191,17 @@ export function Header({ variant = "platform", panchayatName, onLanguageChange }
                   className="hidden bg-[#E31E24] text-white hover:bg-[#C91A20] md:inline-flex h-9"
                 >
                   <User className="mr-2 h-4 w-4" />
-                  <span className="hidden lg:inline">Go to Dashboard</span>
+                  <span className="hidden lg:inline">{t('nav.dashboard')}</span>
                   <span className="lg:hidden">Dashboard</span>
                 </Button>
               ) : (
-                <Button 
+                <Button
                   asChild
                   className="hidden bg-[#E31E24] text-white hover:bg-[#C91A20] md:inline-flex h-9"
                 >
                   <Link to="/login">
                     <User className="mr-2 h-4 w-4" />
-                    <span className="hidden lg:inline">Sachiv Login</span>
+                    <span className="hidden lg:inline">{t('nav.login')}</span>
                     <span className="lg:hidden">Login</span>
                   </Link>
                 </Button>
@@ -256,8 +261,8 @@ export function Header({ variant = "platform", panchayatName, onLanguageChange }
                   <div className="mt-auto pt-4 pb-4 border-t border-[#E5E5E5] space-y-3 px-4 flex-shrink-0 bg-white">
                     {/* Language Selector in Mobile Menu */}
                     <div>
-                      <p className="text-xs font-medium text-[#666] mb-2">Language</p>
-                      <div className="flex gap-2">
+                      <p className="text-xs font-medium text-[#666] mb-2">{t('nav.language')}</p>
+                      <div className="grid grid-cols-2 gap-2">
                         <Button
                           variant="outline"
                           size="sm"
@@ -265,9 +270,20 @@ export function Header({ variant = "platform", panchayatName, onLanguageChange }
                             onLanguageChange?.("en");
                             setMobileMenuOpen(false);
                           }}
-                          className="flex-1 text-xs h-8"
+                          className="text-xs h-8"
                         >
                           English
+                        </Button>
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => {
+                            onLanguageChange?.("mr");
+                            setMobileMenuOpen(false);
+                          }}
+                          className="text-xs h-8"
+                        >
+                          मराठी
                         </Button>
                         <Button
                           variant="outline"
@@ -276,7 +292,7 @@ export function Header({ variant = "platform", panchayatName, onLanguageChange }
                             onLanguageChange?.("hi");
                             setMobileMenuOpen(false);
                           }}
-                          className="flex-1 text-xs h-8"
+                          className="text-xs h-8"
                         >
                           हिंदी
                         </Button>
@@ -287,7 +303,7 @@ export function Header({ variant = "platform", panchayatName, onLanguageChange }
                             onLanguageChange?.("regional");
                             setMobileMenuOpen(false);
                           }}
-                          className="flex-1 text-xs h-8"
+                          className="text-xs h-8"
                         >
                           Regional
                         </Button>
@@ -297,7 +313,7 @@ export function Header({ variant = "platform", panchayatName, onLanguageChange }
                     {/* Login/Dashboard Button */}
                     {variant === "platform" && (
                       user ? (
-                        <Button 
+                        <Button
                           onClick={() => {
                             // Redirect to appropriate dashboard based on user role
                             if (user.role === 'SUPER_ADMIN') {
@@ -310,10 +326,10 @@ export function Header({ variant = "platform", panchayatName, onLanguageChange }
                           className="w-full bg-[#E31E24] text-white hover:bg-[#C91A20] h-10"
                         >
                           <User className="mr-2 h-4 w-4" />
-                          Go to Dashboard
+                          {t('nav.dashboard')}
                         </Button>
                       ) : (
-                        <Button 
+                        <Button
                           onClick={() => {
                             navigate('/login');
                             setMobileMenuOpen(false);
@@ -321,7 +337,7 @@ export function Header({ variant = "platform", panchayatName, onLanguageChange }
                           className="w-full bg-[#E31E24] text-white hover:bg-[#C91A20] h-10"
                         >
                           <User className="mr-2 h-4 w-4" />
-                          Sachiv Login
+                          {t('nav.login')}
                         </Button>
                       )
                     )}

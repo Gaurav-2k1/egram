@@ -16,7 +16,7 @@ import { postApi, analyticsAdapter } from "@/routes/api";
 export function DashboardPage() {
   const { user } = useAuth();
   const [posts, setPosts] = useState<Post[]>([]);
-  console.log("Posts:", posts);
+
   const [schemes, setSchemes] = useState<Scheme[]>([]);
   const [announcements, setAnnouncements] = useState<Announcement[]>([]);
   const [stats, setStats] = useState({

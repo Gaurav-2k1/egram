@@ -1,0 +1,274 @@
+{
+  "nav": {
+    "home": "Home",
+    "features": "Features",
+    "panchayats": "Panchayats",
+    "about": "About",
+    "contact": "Contact",
+    "schemes": "Schemes",
+    "projects": "Projects",
+    "gallery": "Gallery",
+    "login": "Sachiv Login",
+    "dashboard": "Go to Dashboard",
+    "language": "Language"
+  },
+  "hero": {
+    "badge": "Government of India Initiative",
+    "title": "Empowering",
+    "titleHighlight1": "Gram Panchayats",
+    "titleHighlight2": "Digital India",
+    "titleFor": "for",
+    "subtitle": "Create a professional website for your Gram Panchayat in minutes. Share schemes, updates, and connect with citizens - all in one platform.",
+    "cta": "Register Your Panchayat",
+    "learnMore": "Learn More",
+    "searchPlaceholder": "Search your Panchayat by name or district...",
+    "searchButton": "Search"
+  },
+  "stats": {
+    "activePanchayats": "Active Panchayats",
+    "citizensReached": "Citizens Reached",
+    "schemesImplemented": "Schemes Implemented",
+    "satisfactionRate": "Satisfaction Rate"
+  },
+  "features": {
+    "title": "Why Choose",
+    "titleHighlight": "e-GramSeva",
+    "subtitle": "Built specifically for Indian Gram Panchayats with features that matter most for rural governance and citizen engagement.",
+    "easyManagement": {
+      "title": "Easy Management",
+      "description": "Intuitive dashboard for Panchayat Sachivs to manage content, schemes, and updates effortlessly."
+    },
+    "quickSetup": {
+      "title": "Quick Setup",
+      "description": "Get your Panchayat website live in minutes with custom subdomain and ready-to-use templates."
+    },
+    "analytics": {
+      "title": "Real-time Analytics",
+      "description": "Track visitor engagement, scheme reach, and citizen interaction with comprehensive analytics."
+    }
+  },
+  "schemes": {
+    "title": "Government Schemes",
+    "subtitle": "Explore and apply for various government schemes available for rural development",
+    "searchPlaceholder": "Search schemes...",
+    "searchButton": "Search",
+    "pmAwas": {
+      "title": "PM Awas Yojana",
+      "description": "Housing for all by 2024"
+    },
+    "mgnrega": {
+      "title": "MGNREGA",
+      "description": "Employment guarantee scheme"
+    },
+    "pmKisan": {
+      "title": "PM Kisan",
+      "description": "Direct income support"
+    }
+  },
+  "news": {
+    "title": "News & Updates",
+    "subtitle": "Latest announcements and updates from the platform",
+    "pressRelease": "Press Release",
+    "newsTitle": "New Digital Initiatives Launched",
+    "newsDescription": "Government announces new digital initiatives for rural development...",
+    "date": "January 15, 2025"
+  },
+  "directories": {
+    "title": "Directories",
+    "subtitle": "Quick access to important information and services",
+    "whosWho": {
+      "title": "Who's Who",
+      "description": "Key personnel"
+    },
+    "contact": {
+      "title": "Contact Directory",
+      "description": "Important contacts"
+    },
+    "web": {
+      "title": "Web Directory",
+      "description": "Related websites"
+    },
+    "resources": {
+      "title": "Resources",
+      "description": "Documents & guides"
+    }
+  },
+  "activePanchayats": {
+    "title": "Active",
+    "titleHighlight": "Panchayats",
+    "subtitle": "Explore Gram Panchayats that are already using our platform to serve their communities better.",
+    "loading": "Loading panchayats...",
+    "noData": "No active panchayats available at the moment",
+    "checkBack": "Check back later or register your panchayat",
+    "gramPanchayat": "Gram Panchayat",
+    "activeSchemes": "Active Schemes",
+    "population": "Population",
+    "viewAll": "View All Panchayats"
+  },
+  "exploreIndia": {
+    "title": "Explore India",
+    "subtitle": "Discover various categories of government services and information",
+    "governance": "Governance",
+    "schemes": "Schemes",
+    "citizens": "Citizens",
+    "services": "Services",
+    "resources": "Resources",
+    "data": "Data"
+  },
+  "myGov": {
+    "title": "MyGov Connect",
+    "subtitle": "Participate in governance and share your ideas with the government",
+    "shareIdeas": {
+      "title": "Share Ideas",
+      "description": "Contribute your suggestions"
+    },
+    "participate": {
+      "title": "Participate",
+      "description": "Join discussions and polls"
+    },
+    "engage": {
+      "title": "Engage",
+      "description": "Connect with government initiatives"
+    }
+  },
+  "cta": {
+    "title": "Ready to Get Started?",
+    "subtitle": "Register your Gram Panchayat today and create a digital presence that empowers your community and promotes transparent governance.",
+    "button": "Register Now - It's Free"
+  },
+  "footer": {
+    "about": "e-GramSeva",
+    "aboutUs": "About Us",
+    "aboutText": "Empowering rural India through digital transformation. Connecting Gram Panchayats with citizens for transparent governance and better service delivery.",
+    "aboutTextPanchayat": "Working towards the development and prosperity of our village through transparent governance and citizen participation.",
+    "quickLinks": "Quick Links",
+    "home": "Home",
+    "register": "Register",
+    "schemes": "Schemes",
+    "panchayats": "Panchayats",
+    "projects": "Projects",
+    "contact": "Contact",
+    "privacyPolicy": "Privacy Policy",
+    "myGovernment": "My Government",
+    "ministryPanchayatiRaj": "Ministry of Panchayati Raj",
+    "indiaGov": "India.gov.in",
+    "digitalIndia": "Digital India",
+    "termsOfUse": "Terms of Use",
+    "contactInfo": "Contact",
+    "email": "info@egramseva.gov.in",
+    "phone": "1800-XXX-XXXX (Toll Free)",
+    "address": "Ministry of Panchayati Raj, New Delhi",
+    "governmentServices": "Government Services",
+    "copyright": "© 2025 e-GramSeva. All rights reserved. | Designed following UX4G standards",
+    "browserInfo": "Best viewed in Chrome, Firefox, Safari"
+  },
+  "login": {
+    "title": "Sign In",
+    "subtitle": "Enter your credentials to access the dashboard",
+    "email": "Email Address",
+    "password": "Password",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password",
+    "forgotPassword": "Forgot Password?",
+    "loginButton": "Sign In",
+    "loggingIn": "Signing in...",
+    "noAccount": "Don't have an account?",
+    "registerHere": "Register here",
+    "demoCredentials": "Demo Credentials",
+    "superAdmin": "Super Admin",
+    "sachiv": "Sachiv"
+  },
+  "registration": {
+    "title": "Register Your Panchayat",
+    "subtitle": "Create your digital presence in minutes",
+    "step1": "Personal Details",
+    "step2": "Panchayat Details",
+    "step3": "Review & Submit",
+    "step1Description": "Please provide your personal information as Panchayat Sachiv",
+    "step2Description": "Enter details about your Gram Panchayat",
+    "step3Description": "Review your information before submitting",
+    "fullName": "Full Name",
+    "fullNamePlaceholder": "Enter your full name",
+    "email": "Email Address",
+    "emailPlaceholder": "your.email@example.com",
+    "phone": "Phone Number",
+    "phonePlaceholder": "+91 XXXXX XXXXX",
+    "designation": "Designation",
+    "designationPlaceholder": "e.g., Panchayat Secretary",
+    "password": "Password",
+    "passwordPlaceholder": "Create a strong password",
+    "confirmPassword": "Confirm Password",
+    "confirmPasswordPlaceholder": "Re-enter your password",
+    "panchayatName": "Panchayat Name",
+    "panchayatNamePlaceholder": "Enter Gram Panchayat name",
+    "state": "State",
+    "statePlaceholder": "Select state",
+    "district": "District",
+    "districtPlaceholder": "Enter district name",
+    "block": "Block/Taluka",
+    "blockPlaceholder": "Enter block/taluka name",
+    "population": "Population",
+    "populationPlaceholder": "Approximate population",
+    "area": "Area (sq km)",
+    "areaPlaceholder": "Total area",
+    "wards": "Number of Wards",
+    "wardsPlaceholder": "Total wards",
+    "subdomain": "Subdomain",
+    "subdomainPlaceholder": "yourpanchayat",
+    "subdomainHelper": "Your website will be: yourpanchayat.egramseva.in",
+    "acceptTerms": "I accept the terms and conditions",
+    "previous": "Previous",
+    "next": "Next",
+    "submit": "Submit Registration",
+    "submitting": "Submitting...",
+    "reviewTitle": "Review Your Information",
+    "personalInfo": "Personal Information",
+    "panchayatInfo": "Panchayat Information"
+  },
+  "validation": {
+    "required": "This field is required",
+    "emailInvalid": "Please enter a valid email address",
+    "phoneInvalid": "Please enter a valid 10-digit phone number",
+    "passwordWeak": "Password must contain uppercase, lowercase, number, and special character",
+    "passwordMismatch": "Passwords do not match",
+    "subdomainInvalid": "Subdomain can only contain lowercase letters, numbers, and hyphens",
+    "termsRequired": "You must accept the terms and conditions",
+    "fillAllFields": "Please fill in all required fields"
+  },
+  "notifications": {
+    "loginSuccess": "Login successful!",
+    "loginError": "Invalid credentials. Please try again.",
+    "registrationSuccess": "Registration submitted successfully!",
+    "registrationError": "Registration failed. Please try again.",
+    "updateSuccess": "Updated successfully!",
+    "updateError": "Update failed. Please try again.",
+    "deleteSuccess": "Deleted successfully!",
+    "deleteError": "Delete failed. Please try again.",
+    "saveSuccess": "Saved successfully!",
+    "saveError": "Save failed. Please try again."
+  },
+  "common": {
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "backToHome": "Back to Home",
+    "viewAll": "View All",
+    "readMore": "Read More",
+    "submit": "Submit",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit",
+    "close": "Close",
+    "search": "Search",
+    "filter": "Filter",
+    "sort": "Sort",
+    "download": "Download",
+    "upload": "Upload",
+    "print": "Print",
+    "share": "Share",
+    "yes": "Yes",
+    "no": "No"
+  }
+}
+

@@ -1,11 +1,14 @@
 import { Facebook, Twitter, Youtube, Mail, Phone, MapPin, ExternalLink } from "lucide-react";
 import { Link } from "react-router-dom";
+import { useTranslation } from "react-i18next";
 
 interface FooterProps {
   variant?: "platform" | "panchayat";
 }
 
 export function Footer({ variant = "platform" }: FooterProps) {
+  const { t } = useTranslation();
+
   const governmentLinks = [
     { name: "CPGRAMS", url: "https://pgportal.gov.in" },
     { name: "Data.gov.in", url: "https://data.gov.in" },
@@ -22,12 +25,12 @@ export function Footer({ variant = "platform" }: FooterProps) {
           {/* About Section */}
           <div className="lg:col-span-2">
             <h3 className="mb-4 text-lg font-semibold text-white">
-              {variant === "platform" ? "e-GramSeva" : "About Us"}
+              {variant === "platform" ? t('footer.about') : t('footer.aboutUs')}
             </h3>
             <p className="mb-4 text-sm leading-relaxed text-white/80">
               {variant === "platform"
-                ? "Empowering rural India through digital transformation. Connecting Gram Panchayats with citizens for transparent governance and better service delivery."
-                : "Working towards the development and prosperity of our village through transparent governance and citizen participation."}
+                ? t('footer.aboutText')
+                : t('footer.aboutTextPanchayat')}
             </p>
             <div className="flex gap-3">
               <a
@@ -56,38 +59,38 @@ export function Footer({ variant = "platform" }: FooterProps) {
 
           {/* Quick Links */}
           <div>
-            <h4 className="mb-4 text-base font-semibold text-white">Quick Links</h4>
+            <h4 className="mb-4 text-base font-semibold text-white">{t('footer.quickLinks')}</h4>
             <ul className="space-y-2 text-sm">
               <li>
                 <Link to="/" className="text-white/80 transition-colors hover:text-white">
-                  Home
+                  {t('footer.home')}
                 </Link>
               </li>
               <li>
                 {variant === "platform" ? (
                   <Link to="/registration" className="text-white/80 transition-colors hover:text-white">
-                    Register
+                    {t('footer.register')}
                   </Link>
                 ) : (
                   <button onClick={() => {
                     const element = document.querySelector('#schemes');
                     if (element) element.scrollIntoView({ behavior: 'smooth' });
                   }} className="text-white/80 transition-colors hover:text-white bg-transparent border-none cursor-pointer">
-                    Schemes
+                    {t('footer.schemes')}
                   </button>
                 )}
               </li>
               <li>
                 {variant === "platform" ? (
                   <Link to="/panchayats" className="text-white/80 transition-colors hover:text-white">
-                    Panchayats
+                    {t('footer.panchayats')}
                   </Link>
                 ) : (
                   <button onClick={() => {
                     const element = document.querySelector('#projects');
                     if (element) element.scrollIntoView({ behavior: 'smooth' });
                   }} className="text-white/80 transition-colors hover:text-white bg-transparent border-none cursor-pointer">
-                    Projects
+                    {t('footer.projects')}
                   </button>
                 )}
               </li>
@@ -96,12 +99,12 @@ export function Footer({ variant = "platform" }: FooterProps) {
                   const element = document.querySelector('#contact');
                   if (element) element.scrollIntoView({ behavior: 'smooth' });
                 }} className="text-white/80 transition-colors hover:text-white bg-transparent border-none cursor-pointer">
-                  Contact
+                  {t('footer.contact')}
                 </button>
               </li>
               <li>
                 <a href="#" className="text-white/80 transition-colors hover:text-white">
-                  Privacy Policy
+                  {t('footer.privacyPolicy')}
                 </a>
               </li>
             </ul>
@@ -109,26 +112,26 @@ export function Footer({ variant = "platform" }: FooterProps) {
 
           {/* My Government */}
           <div>
-            <h4 className="mb-4 text-base font-semibold text-white">My Government</h4>
+            <h4 className="mb-4 text-base font-semibold text-white">{t('footer.myGovernment')}</h4>
             <ul className="space-y-2 text-sm">
               <li>
                 <a href="#" className="text-white/80 transition-colors hover:text-white">
-                  Ministry of Panchayati Raj
+                  {t('footer.ministryPanchayatiRaj')}
                 </a>
               </li>
               <li>
                 <a href="#" className="text-white/80 transition-colors hover:text-white">
-                  India.gov.in
+                  {t('footer.indiaGov')}
                 </a>
               </li>
               <li>
                 <a href="#" className="text-white/80 transition-colors hover:text-white">
-                  Digital India
+                  {t('footer.digitalIndia')}
                 </a>
               </li>
               <li>
                 <a href="#" className="text-white/80 transition-colors hover:text-white">
-                  Terms of Use
+                  {t('footer.termsOfUse')}
                 </a>
               </li>
             </ul>
@@ -136,22 +139,22 @@ export function Footer({ variant = "platform" }: FooterProps) {
 
           {/* Contact Info */}
           <div>
-            <h4 className="mb-4 text-base font-semibold text-white">Contact</h4>
+            <h4 className="mb-4 text-base font-semibold text-white">{t('footer.contactInfo')}</h4>
             <ul className="space-y-3 text-sm">
               <li className="flex items-start gap-2">
                 <Mail className="mt-0.5 h-4 w-4 flex-shrink-0 text-[#FF9933]" />
                 <a href="mailto:info@egramseva.gov.in" className="text-white/80 transition-colors hover:text-white">
-                  info@egramseva.gov.in
+                  {t('footer.email')}
                 </a>
               </li>
               <li className="flex items-start gap-2">
                 <Phone className="mt-0.5 h-4 w-4 flex-shrink-0 text-[#FF9933]" />
-                <span className="text-white/80">1800-XXX-XXXX (Toll Free)</span>
+                <span className="text-white/80">{t('footer.phone')}</span>
               </li>
               <li className="flex items-start gap-2">
                 <MapPin className="mt-0.5 h-4 w-4 flex-shrink-0 text-[#FF9933]" />
                 <span className="text-white/80">
-                  Ministry of Panchayati Raj, New Delhi
+                  {t('footer.address')}
                 </span>
               </li>
             </ul>
@@ -161,7 +164,7 @@ export function Footer({ variant = "platform" }: FooterProps) {
         {/* Government Links Section */}
         {variant === "platform" && (
           <div className="mt-12 border-t border-white/10 pt-8">
-            <h4 className="mb-4 text-base font-semibold text-white">Government Services</h4>
+            <h4 className="mb-4 text-base font-semibold text-white">{t('footer.governmentServices')}</h4>
             <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-5">
               {governmentLinks.map((link) => (
                 <a
@@ -186,10 +189,10 @@ export function Footer({ variant = "platform" }: FooterProps) {
         <div className="container mx-auto px-4 py-4 lg:px-8">
           <div className="flex flex-col items-center justify-between gap-2 text-sm text-white/60 sm:flex-row">
             <p>
-              © 2025 e-GramSeva. All rights reserved. | Designed following UX4G standards
+              {t('footer.copyright')}
             </p>
             <p>
-              Best viewed in Chrome, Firefox, Safari
+              {t('footer.browserInfo')}
             </p>
           </div>
         </div>

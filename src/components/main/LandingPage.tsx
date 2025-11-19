@@ -1,9 +1,9 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-import { 
-  ArrowRight, Users, Zap, TrendingUp, MapPin, 
-  Search, FileText, Building2, Globe, Award, 
-  Calendar, Phone, BarChart3, Target, 
+import {
+  ArrowRight, Users, Zap, TrendingUp, MapPin,
+  Search, FileText, Building2, Globe, Award,
+  Calendar, Phone, BarChart3, Target,
   Heart, Lightbulb, BookOpen, Users2, Briefcase
 } from "lucide-react";
 import { Button } from "../ui/button";
@@ -14,12 +14,19 @@ import { ImageWithFallback } from "../figma/ImageWithFallback";
 import { panchayatAPI } from "../../services/api";
 import { toast } from "sonner";
 import type { ActivePanchayat } from "../../types";
+import { useTranslation } from "react-i18next";
 
 export function LandingPage() {
   const navigate = useNavigate();
+  const { t } = useTranslation();
   const [activePanchayats, setActivePanchayats] = useState<ActivePanchayat[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState("");
+
+  // Scroll to top when component mounts (when navigating back to landing page)
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, []);
 
   useEffect(() => {
     const fetchPanchayats = async () => {
@@ -55,19 +62,19 @@ export function LandingPage() {
   const features = [
     {
       icon: Users,
-      title: "Easy Management",
-      description: "Intuitive dashboard for Panchayat Sachivs to manage content, schemes, and updates effortlessly.",
+      title: t('features.easyManagement.title'),
+      description: t('features.easyManagement.description'),
     },
-  
+
     {
       icon: Zap,
-      title: "Quick Setup",
-      description: "Get your Panchayat website live in minutes with custom subdomain and ready-to-use templates.",
+      title: t('features.quickSetup.title'),
+      description: t('features.quickSetup.description'),
     },
     {
       icon: TrendingUp,
-      title: "Real-time Analytics",
-      description: "Track visitor engagement, scheme reach, and citizen interaction with comprehensive analytics.",
+      title: t('features.analytics.title'),
+      description: t('features.analytics.description'),
     },
   ];
 
@@ -96,17 +103,16 @@ export function LandingPage() {
         <div className="container relative mx-auto px-4 py-20 lg:px-8 lg:py-32">
           <div className="mx-auto max-w-4xl text-center">
             <Badge className="mb-6 bg-white/20 text-white backdrop-blur-sm">
-              Government of India Initiative
+              {t('hero.badge')}
             </Badge>
             <h1 className="mb-6 text-4xl font-bold text-white lg:text-5xl">
-              Empowering <span className="text-[#FF9933]">Gram Panchayats</span> for{" "}
-              <span className="text-[#138808]">Digital India</span>
+              {t('hero.title')} <span className="text-[#FF9933]">{t('hero.titleHighlight1')}</span> {t('hero.titleFor')}{" "}
+              <span className="text-[#138808]">{t('hero.titleHighlight2')}</span>
             </h1>
             <p className="mb-8 text-lg text-white/90">
-              Create your Panchayat's digital presence in minutes. Showcase schemes, projects,
-              and achievements with a professional website tailored for rural governance.
+              {t('hero.subtitle')}
             </p>
-            
+
             {/* Search Bar */}
             <div className="mx-auto mb-8 max-w-2xl">
               <div className="flex gap-2 rounded-lg bg-white p-2 shadow-lg">
@@ -114,18 +120,18 @@ export function LandingPage() {
                   <Search className="h-5 w-5 text-[#666]" />
                   <Input
                     type="search"
-                    placeholder="Search schemes, services, or information..."
+                    placeholder={t('hero.searchPlaceholder')}
                     className="border-0 bg-transparent text-[#333] focus-visible:ring-0"
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}
                     onKeyPress={handleSearchKeyPress}
                   />
                 </div>
-                <Button 
+                <Button
                   className="bg-[#E31E24] text-white hover:bg-[#C91A20]"
                   onClick={handleSearch}
                 >
-                  Search
+                  {t('hero.searchButton')}
                 </Button>
               </div>
             </div>
@@ -136,7 +142,7 @@ export function LandingPage() {
                 className="bg-[#E31E24] text-white hover:bg-[#C91A20]"
                 onClick={() => navigate("/registration")}
               >
-                Register Your Panchayat
+                {t('hero.cta')}
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
               <Button
@@ -145,7 +151,7 @@ export function LandingPage() {
                 className="border-white/30 bg-white/10 text-white hover:bg-white/20"
                 onClick={() => navigate("/panchayat-demo")}
               >
-                View Demo
+                {t('hero.learnMore')}
               </Button>
             </div>
           </div>
@@ -157,10 +163,10 @@ export function LandingPage() {
         <div className="container mx-auto px-4 lg:px-8">
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
             {[
-              { icon: Building2, value: "500+", label: "Active Panchayats", color: "#E31E24" },
-              { icon: Users, value: "2.5M+", label: "Citizens Reached", color: "#FF9933" },
-              { icon: FileText, value: "8,500+", label: "Schemes Implemented", color: "#138808" },
-              { icon: Award, value: "98%", label: "Satisfaction Rate", color: "#6C5CE7" },
+              { icon: Building2, value: "500+", label: t('stats.activePanchayats'), color: "#E31E24" },
+              { icon: Users, value: "2.5M+", label: t('stats.citizensReached'), color: "#FF9933" },
+              { icon: FileText, value: "8,500+", label: t('stats.schemesImplemented'), color: "#138808" },
+              { icon: Award, value: "98%", label: t('stats.satisfactionRate'), color: "#6C5CE7" },
             ].map((stat, index) => (
               <Card key={index} className="border border-[#E5E5E5] bg-white shadow-sm transition-all hover:shadow-md">
                 <CardContent className="flex items-center gap-4 p-6">
@@ -186,11 +192,10 @@ export function LandingPage() {
         <div className="container mx-auto px-4 lg:px-8">
           <div className="mb-12 text-center">
             <h2 className="section-title inline-block">
-              Why Choose <span className="text-[#138808]">e-GramSeva</span>?
+              {t('features.title')} <span className="text-[#138808]">{t('features.titleHighlight')}</span>?
             </h2>
             <p className="mx-auto max-w-2xl text-[#666]">
-              Built specifically for Indian Gram Panchayats with features that matter most for
-              rural governance and citizen engagement.
+              {t('features.subtitle')}
             </p>
           </div>
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
@@ -215,9 +220,9 @@ export function LandingPage() {
       <section className="bg-[#DC143C] py-16 text-white lg:py-24" style={{ backgroundColor: '#DC143C' }}>
         <div className="container mx-auto px-4 lg:px-8">
           <div className="mb-8 text-center">
-            <h2 className="mb-4 text-3xl font-bold text-white">Government Schemes</h2>
+            <h2 className="mb-4 text-3xl font-bold text-white">{t('schemes.title')}</h2>
             <p className="mx-auto max-w-2xl text-white/90">
-              Explore and apply for various government schemes available for rural development
+              {t('schemes.subtitle')}
             </p>
           </div>
           <div className="mx-auto mb-8 max-w-2xl">
@@ -226,20 +231,20 @@ export function LandingPage() {
                 <Search className="h-5 w-5 text-white" />
                 <Input
                   type="search"
-                  placeholder="Search schemes..."
+                  placeholder={t('schemes.searchPlaceholder')}
                   className="border-0 bg-white/20 text-white placeholder:text-white/70 focus-visible:ring-0"
                 />
               </div>
               <Button className="bg-white text-[#DC143C] hover:bg-white/90">
-                Search
+                {t('schemes.searchButton')}
               </Button>
             </div>
           </div>
           <div className="grid gap-6 md:grid-cols-3">
             {[
-              { title: "PM Awas Yojana", description: "Housing for all by 2024", icon: Building2 },
-              { title: "MGNREGA", description: "Employment guarantee scheme", icon: Briefcase },
-              { title: "PM Kisan", description: "Direct income support", icon: Heart },
+              { title: t('schemes.pmAwas.title'), description: t('schemes.pmAwas.description'), icon: Building2 },
+              { title: t('schemes.mgnrega.title'), description: t('schemes.mgnrega.description'), icon: Briefcase },
+              { title: t('schemes.pmKisan.title'), description: t('schemes.pmKisan.description'), icon: Heart },
             ].map((scheme, index) => (
               <Card key={index} className="border-0 bg-white/10 backdrop-blur-sm transition-all hover:bg-white/20">
                 <CardContent className="p-6">
@@ -257,8 +262,8 @@ export function LandingPage() {
       <section className="bg-white py-16 lg:py-24">
         <div className="container mx-auto px-4 lg:px-8">
           <div className="mb-12">
-            <h2 className="section-title inline-block">News & Updates</h2>
-            <p className="text-[#666]">Latest announcements and updates from the platform</p>
+            <h2 className="section-title inline-block">{t('news.title')}</h2>
+            <p className="text-[#666]">{t('news.subtitle')}</p>
           </div>
           <div className="grid gap-6 md:grid-cols-3">
             {[1, 2, 3].map((item) => (
@@ -271,16 +276,16 @@ export function LandingPage() {
                   />
                 </div>
                 <CardHeader>
-                  <Badge className="w-fit bg-[#E31E24] text-white">Press Release</Badge>
-                  <CardTitle className="text-[#1B2B5E]">New Digital Initiatives Launched</CardTitle>
+                  <Badge className="w-fit bg-[#E31E24] text-white">{t('news.pressRelease')}</Badge>
+                  <CardTitle className="text-[#1B2B5E]">{t('news.newsTitle')}</CardTitle>
                   <CardDescription className="text-[#666]">
-                    Government announces new digital initiatives for rural development...
+                    {t('news.newsDescription')}
                   </CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="flex items-center gap-2 text-sm text-[#666]">
                     <Calendar className="h-4 w-4" />
-                    <span>January 15, 2025</span>
+                    <span>{t('news.date')}</span>
                   </div>
                 </CardContent>
               </Card>
@@ -293,19 +298,19 @@ export function LandingPage() {
       <section className="bg-white py-16 lg:py-24" id="panchayats">
         <div className="container mx-auto px-4 lg:px-8">
           <div className="mb-12">
-            <h2 className="section-title inline-block">Directories</h2>
-            <p className="text-[#666]">Quick access to important information and services</p>
+            <h2 className="section-title inline-block">{t('directories.title')}</h2>
+            <p className="text-[#666]">{t('directories.subtitle')}</p>
           </div>
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
             {[
-              { icon: Users2, title: "Who's Who", description: "Key personnel", color: "#E31E24" },
-              { icon: Phone, title: "Contact Directory", description: "Important contacts", color: "#FF9933" },
-              { icon: Globe, title: "Web Directory", description: "Related websites", color: "#138808" },
-              { icon: BookOpen, title: "Resources", description: "Documents & guides", color: "#6C5CE7" },
+              { icon: Users2, title: t('directories.whosWho.title'), description: t('directories.whosWho.description'), color: "#E31E24" },
+              { icon: Phone, title: t('directories.contact.title'), description: t('directories.contact.description'), color: "#FF9933" },
+              { icon: Globe, title: t('directories.web.title'), description: t('directories.web.description'), color: "#138808" },
+              { icon: BookOpen, title: t('directories.resources.title'), description: t('directories.resources.description'), color: "#6C5CE7" },
             ].map((dir, index) => (
               <Card key={index} className="border border-[#E5E5E5] bg-white shadow-sm transition-all hover:shadow-md hover:scale-105 cursor-pointer">
                 <CardContent className="flex flex-col items-center p-6 text-center">
-                  <div 
+                  <div
                     className="mb-4 flex h-16 w-16 items-center justify-center rounded-lg"
                     style={{ backgroundColor: `${dir.color}15` }}
                   >
@@ -325,28 +330,28 @@ export function LandingPage() {
         <div className="container mx-auto px-4 lg:px-8">
           <div className="mb-12 text-center">
             <h2 className="section-title inline-block">
-              Active <span className="text-[#FF9933]">Panchayats</span>
+              {t('activePanchayats.title')} <span className="text-[#FF9933]">{t('activePanchayats.titleHighlight')}</span>
             </h2>
             <p className="mx-auto max-w-2xl text-[#666]">
-              Explore Gram Panchayats that are already using our platform to serve their communities better.
+              {t('activePanchayats.subtitle')}
             </p>
           </div>
           <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-4">
             {loading ? (
               <div className="col-span-4 text-center py-8">
                 <div className="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-[#E31E24] border-r-transparent"></div>
-                <p className="mt-2 text-[#666]">Loading panchayats...</p>
+                <p className="mt-2 text-[#666]">{t('activePanchayats.loading')}</p>
               </div>
             ) : activePanchayats.length === 0 ? (
               <div className="col-span-4 text-center py-8">
                 <Building2 className="mx-auto h-12 w-12 text-[#666] mb-3 opacity-50" />
-                <p className="text-[#666]">No active panchayats available at the moment</p>
-                <p className="mt-1 text-sm text-[#999]">Check back later or register your panchayat</p>
+                <p className="text-[#666]">{t('activePanchayats.noData')}</p>
+                <p className="mt-1 text-sm text-[#999]">{t('activePanchayats.checkBack')}</p>
               </div>
             ) : (
               activePanchayats.map((panchayat, index) => (
-              <Card 
-                key={panchayat.subdomain || index} 
+              <Card
+                key={panchayat.subdomain || index}
                 className="border border-[#E5E5E5] bg-white shadow-sm transition-all hover:shadow-md hover:scale-105 cursor-pointer"
                 onClick={() => navigate(`/panchayat/${panchayat.subdomain}`)}
               >
@@ -356,16 +361,16 @@ export function LandingPage() {
                     <Badge variant="secondary" className="bg-[#F5F5F5] text-[#666]">{panchayat.district}</Badge>
                   </div>
                   <CardTitle className="text-[#1B2B5E]">{panchayat.name}</CardTitle>
-                  <CardDescription className="text-[#666]">Gram Panchayat</CardDescription>
+                  <CardDescription className="text-[#666]">{t('activePanchayats.gramPanchayat')}</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="flex justify-between text-sm">
                     <div>
-                      <p className="text-[#666]">Active Schemes</p>
+                      <p className="text-[#666]">{t('activePanchayats.activeSchemes')}</p>
                       <p className="font-semibold text-[#138808]">{panchayat.schemes || 0}</p>
                     </div>
                     <div className="text-right">
-                      <p className="text-[#666]">Population</p>
+                      <p className="text-[#666]">{t('activePanchayats.population')}</p>
                       <p className="font-semibold text-[#138808]">
                         {panchayat.population > 0 ? panchayat.population.toLocaleString() : 'N/A'}
                       </p>
@@ -377,13 +382,16 @@ export function LandingPage() {
             )}
           </div>
           <div className="mt-12 text-center">
-            <Button 
-              variant="outline" 
-              size="lg" 
+            <Button
+              variant="outline"
+              size="lg"
               className="border-[#E5E5E5] text-[#1B2B5E] hover:bg-[#F5F5F5]"
-              onClick={() => navigate("/panchayats")}
+              onClick={() => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+                navigate("/panchayats");
+              }}
             >
-              View All Panchayats
+              {t('activePanchayats.viewAll')}
             </Button>
           </div>
         </div>
@@ -393,19 +401,19 @@ export function LandingPage() {
       <section className="bg-gradient-to-br from-[#6C5CE7] to-[#5B4B9D] py-16 text-white lg:py-24">
         <div className="container mx-auto px-4 lg:px-8">
           <div className="mb-12 text-center">
-            <h2 className="mb-4 text-3xl font-bold text-white">Explore India</h2>
+            <h2 className="mb-4 text-3xl font-bold text-white">{t('exploreIndia.title')}</h2>
             <p className="mx-auto max-w-2xl text-white/90">
-              Discover various categories of government services and information
+              {t('exploreIndia.subtitle')}
             </p>
           </div>
           <div className="grid gap-6 md:grid-cols-3 lg:grid-cols-6">
             {[
-              { icon: Building2, label: "Governance" },
-              { icon: FileText, label: "Schemes" },
-              { icon: Users, label: "Citizens" },
-              { icon: Globe, label: "Services" },
-              { icon: BookOpen, label: "Resources" },
-              { icon: BarChart3, label: "Data" },
+              { icon: Building2, label: t('exploreIndia.governance') },
+              { icon: FileText, label: t('exploreIndia.schemes') },
+              { icon: Users, label: t('exploreIndia.citizens') },
+              { icon: Globe, label: t('exploreIndia.services') },
+              { icon: BookOpen, label: t('exploreIndia.resources') },
+              { icon: BarChart3, label: t('exploreIndia.data') },
             ].map((category, index) => (
               <Card key={index} className="border-0 bg-white/10 backdrop-blur-sm transition-all hover:bg-white/20 cursor-pointer">
                 <CardContent className="flex flex-col items-center p-6 text-center">
@@ -422,16 +430,16 @@ export function LandingPage() {
       <section id="about" className="bg-gradient-to-r from-[#E31E24] to-[#DC143C] py-16 text-white lg:py-24">
         <div className="container mx-auto px-4 lg:px-8">
           <div className="mb-12 text-center">
-            <h2 className="mb-4 text-3xl font-bold text-white">MyGov Connect</h2>
+            <h2 className="mb-4 text-3xl font-bold text-white">{t('myGov.title')}</h2>
             <p className="mx-auto max-w-2xl text-white/90">
-              Participate in governance and share your ideas with the government
+              {t('myGov.subtitle')}
             </p>
           </div>
           <div className="grid gap-6 md:grid-cols-3">
             {[
-              { icon: Lightbulb, title: "Share Ideas", description: "Contribute your suggestions" },
-              { icon: Target, title: "Participate", description: "Join discussions and polls" },
-              { icon: Heart, title: "Engage", description: "Connect with government initiatives" },
+              { icon: Lightbulb, title: t('myGov.shareIdeas.title'), description: t('myGov.shareIdeas.description') },
+              { icon: Target, title: t('myGov.participate.title'), description: t('myGov.participate.description') },
+              { icon: Heart, title: t('myGov.engage.title'), description: t('myGov.engage.description') },
             ].map((item, index) => (
               <Card key={index} className="border-0 bg-white/10 backdrop-blur-sm transition-all hover:bg-white/20">
                 <CardContent className="p-6 text-center">
@@ -449,18 +457,17 @@ export function LandingPage() {
       <section id="contact" className="bg-white py-16">
         <div className="container mx-auto px-4 text-center lg:px-8">
           <h2 className="mb-4 text-3xl font-bold text-[#1B2B5E]">
-            Ready to Get Started?
+            {t('cta.title')}
           </h2>
           <p className="mx-auto mb-8 max-w-2xl text-[#666]">
-            Register your Gram Panchayat today and create a digital presence that empowers your
-            community and promotes transparent governance.
+            {t('cta.subtitle')}
           </p>
           <Button
             size="lg"
             className="bg-[#E31E24] text-white hover:bg-[#C91A20]"
             onClick={() => navigate("/registration")}
           >
-            Register Now - It's Free
+            {t('cta.button')}
             <ArrowRight className="ml-2 h-5 w-5" />
           </Button>
         </div>

@@ -752,14 +752,12 @@ export const settingsAPI = {
   updateContact: async ( contact: PanchayatSettings['contact']): Promise<PanchayatSettings> => {
     return await settingsAPI.update( { contact });
   },
-  uploadLogo: async ( file: File): Promise<PanchayatSettings> => {
+  uploadLogo: async ( _file: File): Promise<PanchayatSettings> => {
     // For now, return error - file upload needs separate endpoint
-    console.log('Logo upload called with file:', file);
     throw new Error('Logo upload not implemented - please use image URL in settings');
   },
-  uploadHeroImage: async ( file: File): Promise<PanchayatSettings> => {
+  uploadHeroImage: async ( _file: File): Promise<PanchayatSettings> => {
     // For now, return error - file upload needs separate endpoint
-    console.log('Hero image upload called with file:', file);
     throw new Error('Hero image upload not implemented - please use image URL in settings');
   },
 };

@@ -4,7 +4,7 @@
 
 export type PageType = "landing" | "registration" | "panchayat-demo" | "dashboard" | "success";
 
-export type Language = "en" | "hi" | "regional";
+export type Language = "en" | "mr" | "hi" | "regional";
 
 export interface NavigationItem {
   label: string;

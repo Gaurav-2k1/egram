@@ -37,6 +37,11 @@ export function PanchayatWebsite() {
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
   const [formSubmitted, setFormSubmitted] = useState(false);
 
+  // Scroll to top when component mounts or subdomain changes
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }, [subdomain]);
+
   useEffect(() => {
     fetchPanchayatData();
   }, [subdomain]);
@@ -251,7 +256,7 @@ export function PanchayatWebsite() {
     
     if (validateContactForm()) {
       // TODO: Implement actual form submission
-      console.log("Form submitted:", contactForm);
+
       setFormSubmitted(true);
       setContactForm({ name: "", email: "", subject: "", message: "" });
       setTimeout(() => setFormSubmitted(false), 5000);
