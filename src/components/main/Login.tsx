@@ -168,25 +168,6 @@ export function Login() {
                 )}
               </Button>
             </form>
-
-            {/* Demo Credentials */}
-            <div className="mt-6 rounded-lg border border-[#E5E5E5] bg-[#F5F5F5] p-4">
-              <p className="mb-2 text-sm font-medium text-[#1B2B5E]">Demo Credentials:</p>
-              <div className="space-y-1.5 text-xs text-[#666]">
-                <p className="flex items-center gap-2">
-                  <Mail className="h-3 w-3 text-[#E31E24]" />
-                  <span>
-                    <strong className="text-[#1B2B5E]">Email:</strong> sachiv@ramnagar.egramseva.gov.in
-                  </span>
-                </p>
-                <p className="flex items-center gap-2">
-                  <Lock className="h-3 w-3 text-[#E31E24]" />
-                  <span>
-                    <strong className="text-[#1B2B5E]">Password:</strong> password123
-                  </span>
-                </p>
-              </div>
-            </div>
           </CardContent>
         </Card>
 
