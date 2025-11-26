@@ -8,7 +8,7 @@ import { CreatePost } from "../CreatePost";
 import { PostCard } from "../PostCard";
 import { toast } from "sonner";
 import { useAuth } from "../../../contexts/AuthContext";
-import type { Post, PostMedia } from "../../../types";
+import type { Post } from "../../../types";
 import { formatTimeAgo } from "../../../utils/format";
 import { postApi, analyticsAdapter } from "@/routes/api";
 
@@ -48,11 +48,14 @@ export function PostsPage() {
     }
 
     try {
-      const mediaUrl = await extractFirstMediaUrl(postData.media);
+      // Get the first file if available
+      const firstMedia = postData.media[0];
+      const imageFile = firstMedia?.file;
+
       const newPost = await postApi.create({
         title: postData.content.slice(0, 60) || "Panchayat update",
         bodyText: postData.content || "Shared an update",
-        mediaUrl,
+        imageFile,
       });
       setPosts((prev) => [newPost, ...prev]);
       if (user.panchayatId) {
@@ -130,23 +133,5 @@ export function PostsPage() {
       </div>
     </div>
   );
-}
-
-async function extractFirstMediaUrl(media: PostMedia[]): Promise<string | undefined> {
-  if (!media.length) return undefined;
-  const first = media[0];
-  if (first.file) {
-    return convertFileToDataUrl(first.file);
-  }
-  return first.url;
-}
-
-function convertFileToDataUrl(file: File): Promise<string> {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = () => resolve(reader.result as string);
-    reader.onerror = () => reject(reader.error ?? new Error("Failed to read file"));
-    reader.readAsDataURL(file);
-  });
 }
 

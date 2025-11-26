@@ -100,6 +100,18 @@ class HttpClient {
     return this.request<T>({ method: "POST", url, data, ...config });
   }
 
+  postFormData<T>(url: string, formData: FormData, config?: AxiosRequestConfig) {
+    return this.request<T>({
+      method: "POST",
+      url,
+      data: formData,
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+      ...config,
+    });
+  }
+
   put<T>(url: string, data?: unknown, config?: AxiosRequestConfig) {
     return this.request<T>({ method: "PUT", url, data, ...config });
   }
@@ -221,8 +233,27 @@ class PanchayatPostApi {
     return mapPostResponse(data);
   }
 
-  async create(payload: { title?: string; bodyText: string; mediaUrl?: string }) {
-    const data = await this.http.post<ServerPost>("/panchayat/posts", payload);
+  async create(payload: {
+    title?: string;
+    bodyText: string;
+    imageFile?: File;
+  }) {
+    // If there's a file, use FormData
+    if (payload.imageFile) {
+      const formData = new FormData();
+      formData.append("title", payload.title || "");
+      formData.append("bodyText", payload.bodyText);
+      formData.append("imageFile", payload.imageFile);
+
+      const data = await this.http.postFormData<ServerPost>("/panchayat/posts", formData);
+      return mapPostResponse(data);
+    }
+
+    // Otherwise use JSON
+    const data = await this.http.post<ServerPost>("/panchayat/posts", {
+      title: payload.title,
+      bodyText: payload.bodyText,
+    });
     return mapPostResponse(data);
   }
 
@@ -238,7 +269,14 @@ class PanchayatPostApi {
   delete(id: string | number) {
     return this.http.delete(`/panchayat/posts/${id}`);
   }
+
+  async refreshImageUrl(id: string | number): Promise<{ mediaUrl: string }> {
+    const data = await this.http.patch<{ mediaUrl: string }>(`/panchayat/posts/${id}/refresh-image-url`);
+    return data;
+  }
 }
+
+
 
 /**
  * Comments API
@@ -790,6 +828,18 @@ class PanchayatAlbumApi {
       coverImage?: string;
     },
   ) {
+    const anyPayload: any = payload as any;
+    if (anyPayload.coverImageFile instanceof File) {
+      const formData = new FormData();
+      formData.append('albumName', anyPayload.title || '');
+      if (anyPayload.description) formData.append('description', anyPayload.description);
+      formData.append('coverImageFile', anyPayload.coverImageFile);
+      const data = await this.http.post<ServerAlbum>('/panchayat/albums', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
+      return mapAlbumResponse(data);
+    }
+
     const data = await this.http.post<ServerAlbum>("/panchayat/albums", {
       albumName: payload.title,
       description: payload.description,
@@ -806,6 +856,19 @@ class PanchayatAlbumApi {
       coverImage?: string;
     }>,
   ) {
+    // If caller passed a File via payload.coverImageFile (not part of type above), send FormData
+    const anyPayload: any = payload as any;
+    if (anyPayload.coverImageFile instanceof File) {
+      const formData = new FormData();
+      if (anyPayload.title !== undefined) formData.append('albumName', anyPayload.title);
+      if (anyPayload.description !== undefined) formData.append('description', anyPayload.description);
+      formData.append('coverImageFile', anyPayload.coverImageFile);
+      const data = await this.http.put<ServerAlbum>(`/panchayat/albums/${id}`, formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
+      return mapAlbumResponse(data);
+    }
+
     const updatePayload: any = {};
     if (payload.title !== undefined) updatePayload.albumName = payload.title;
     if (payload.description !== undefined) updatePayload.description = payload.description;
@@ -817,6 +880,13 @@ class PanchayatAlbumApi {
 
   async delete(id: string | number) {
     return await this.http.delete(`/panchayat/albums/${id}`);
+  }
+
+  async refreshCoverImageUrl(id: string | number): Promise<{ coverImageUrl?: string; mediaUrl?: string }> {
+    const data = await this.http.patch<{ coverImageUrl?: string; mediaUrl?: string }>(
+      `/panchayat/albums/${id}/refresh-cover-image-url`,
+    );
+    return data;
   }
 }
 
@@ -883,6 +953,21 @@ class PanchayatGalleryApi {
       displayOrder?: number;
     },
   ) {
+    const anyPayload: any = payload as any;
+    // If caller provided an actual File as `imageFile`, send multipart/form-data
+    if (anyPayload.imageFile instanceof File) {
+      const formData = new FormData();
+      if (anyPayload.caption) formData.append('caption', anyPayload.caption);
+      if (anyPayload.tags) formData.append('tags', anyPayload.tags);
+      if (anyPayload.albumId !== undefined) formData.append('albumId', String(anyPayload.albumId));
+      if (anyPayload.displayOrder !== undefined) formData.append('displayOrder', String(anyPayload.displayOrder));
+      formData.append('imageFile', anyPayload.imageFile);
+      const data = await this.http.post<ServerGalleryImage>("/panchayat/gallery", formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
+      return mapGalleryImageResponse(data);
+    }
+
     const data = await this.http.post<ServerGalleryImage>("/panchayat/gallery", payload);
     return mapGalleryImageResponse(data);
   }
@@ -897,12 +982,33 @@ class PanchayatGalleryApi {
       displayOrder?: number;
     }>,
   ) {
+    const anyPayload: any = payload as any;
+    if (anyPayload.imageFile instanceof File) {
+      const formData = new FormData();
+      if (anyPayload.caption) formData.append('caption', anyPayload.caption);
+      if (anyPayload.tags) formData.append('tags', anyPayload.tags);
+      if (anyPayload.albumId !== undefined) formData.append('albumId', String(anyPayload.albumId));
+      if (anyPayload.displayOrder !== undefined) formData.append('displayOrder', String(anyPayload.displayOrder));
+      formData.append('imageFile', anyPayload.imageFile);
+      const data = await this.http.put<ServerGalleryImage>(`/panchayat/gallery/${id}`, formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      });
+      return mapGalleryImageResponse(data);
+    }
+
     const data = await this.http.put<ServerGalleryImage>(`/panchayat/gallery/${id}`, payload);
     return mapGalleryImageResponse(data);
   }
 
   async delete( id: string | number) {
     return await this.http.delete(`/panchayat/gallery/${id}`);
+  }
+
+  async refreshImageUrl(id: string | number): Promise<{ imageUrl?: string; mediaUrl?: string }> {
+    const data = await this.http.patch<{ imageUrl?: string; mediaUrl?: string }>(
+      `/panchayat/gallery/${id}/refresh-image-url`,
+    );
+    return data;
   }
 }
 

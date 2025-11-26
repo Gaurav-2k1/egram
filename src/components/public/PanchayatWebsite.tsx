@@ -160,7 +160,7 @@ export function PanchayatWebsite() {
             phone: member.phone || 'Not available',
             email: member.email || undefined,
             image: undefined, // Backend doesn't have image field yet
-            designation: roleName,
+            designation: member.designation || undefined,
           };
         });
       
@@ -621,7 +621,7 @@ export function PanchayatWebsite() {
                             </Avatar>
                             <div className="flex-1 text-center sm:text-left">
                               <h4 className="text-sm sm:text-base">{member.name}</h4>
-                              <p className="text-xs sm:text-sm text-muted-foreground">{member.role}</p>
+                              <p className="text-xs sm:text-sm text-muted-foreground">{member.designation}</p>
                               <div className="mt-1 flex flex-col sm:flex-row items-center gap-2 sm:gap-4 text-xs sm:text-sm">
                                 <span className="text-[#138808]">{member.ward}</span>
                                 <span className="text-muted-foreground">{member.phone}</span>

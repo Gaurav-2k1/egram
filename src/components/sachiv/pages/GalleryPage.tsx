@@ -30,7 +30,6 @@ export function GalleryPage() {
   const [images, setImages] = useState<GalleryItem[]>([]);
   const [albums, setAlbums] = useState<Album[]>([]);
   const [loading, setLoading] = useState(true);
-  const [loadingAlbums, setLoadingAlbums] = useState(true);
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingImage, setEditingImage] = useState<GalleryItem | null>(null);
@@ -40,6 +39,8 @@ export function GalleryPage() {
     tags: "",
     albumId: "",
   });
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [filePreview, setFilePreview] = useState<string>("");
 
   useEffect(() => {
     if (user?.panchayatId) {
@@ -53,7 +54,7 @@ export function GalleryPage() {
 
     setLoading(true);
     try {
-      const result = await galleryApi.list(user.panchayatId);
+      const result = await galleryApi.list();
       setImages(result.items);
     } catch (error) {
       console.error("Error fetching images:", error);
@@ -66,15 +67,12 @@ export function GalleryPage() {
   const fetchAlbums = async () => {
     if (!user?.panchayatId) return;
 
-    setLoadingAlbums(true);
     try {
       const result = await albumApi.list();
       setAlbums(result.items);
     } catch (error) {
       console.error("Error fetching albums:", error);
       // Don't show error toast for albums, it's optional
-    } finally {
-      setLoadingAlbums(false);
     }
   };
 
@@ -86,6 +84,8 @@ export function GalleryPage() {
       tags: "",
       albumId: "",
     });
+    setSelectedFile(null);
+    setFilePreview("");
     setIsDialogOpen(true);
   };
 
@@ -123,6 +123,8 @@ export function GalleryPage() {
       tags: "",
       albumId: albumId,
     });
+    setSelectedFile(null);
+    setFilePreview("");
     setIsDialogOpen(true);
   };
 
@@ -135,24 +137,34 @@ export function GalleryPage() {
       tags: "",
       albumId: "",
     });
+    setSelectedFile(null);
+    setFilePreview("");
   };
 
   const handleCreate = async (e?: React.FormEvent) => {
     e?.preventDefault();
     if (!user?.panchayatId) return;
 
-    if (!formData.imageUrl.trim()) {
-      toast.error("Please enter image URL");
+    if (!selectedFile && !formData.imageUrl.trim()) {
+      toast.error("Please upload an image file or enter image URL");
       return;
     }
 
     try {
-      await galleryApi.create( {
-        imageUrl: formData.imageUrl,
+      const albumIdNumber = formData.albumId && formData.albumId !== 'none' ? parseInt(formData.albumId) : undefined;
+      const payload: any = {
         caption: formData.caption || undefined,
         tags: formData.tags || undefined,
-        albumId: formData.albumId ? parseInt(formData.albumId) : undefined,
-      });
+        albumId: albumIdNumber,
+      };
+
+      if (selectedFile) {
+        payload.imageFile = selectedFile;
+      } else {
+        payload.imageUrl = formData.imageUrl;
+      }
+
+      await galleryApi.create(payload);
       toast.success("Image uploaded successfully!");
       closeDialog();
       fetchImages();
@@ -166,18 +178,26 @@ export function GalleryPage() {
     e?.preventDefault();
     if (!user?.panchayatId || !editingImage) return;
 
-    if (!formData.imageUrl.trim()) {
-      toast.error("Please enter image URL");
+    if (!selectedFile && !formData.imageUrl.trim()) {
+      toast.error("Please upload an image file or enter image URL");
       return;
     }
 
     try {
-      await galleryApi.update( editingImage.id, {
-        imageUrl: formData.imageUrl,
+      const albumIdNumber = formData.albumId && formData.albumId !== 'none' ? parseInt(formData.albumId) : undefined;
+      const payload: any = {
         caption: formData.caption || undefined,
         tags: formData.tags || undefined,
-        albumId: formData.albumId ? parseInt(formData.albumId) : undefined,
-      });
+        albumId: albumIdNumber,
+      };
+
+      if (selectedFile) {
+        payload.imageFile = selectedFile;
+      } else {
+        payload.imageUrl = formData.imageUrl;
+      }
+
+      await galleryApi.update(editingImage.id, payload);
       toast.success("Image updated successfully!");
       closeDialog();
       fetchImages();
@@ -199,6 +219,23 @@ export function GalleryPage() {
       const message = error instanceof Error ? error.message : "Failed to delete image";
       toast.error(message);
     }
+  };
+
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+      toast.error('Please select a valid image file');
+      return;
+    }
+
+    setSelectedFile(file);
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      setFilePreview(event.target?.result as string);
+    };
+    reader.readAsDataURL(file);
   };
 
   return (
@@ -242,6 +279,7 @@ export function GalleryPage() {
                     src={image.image}
                     alt={image.title}
                     className="w-full h-full object-cover"
+                    data-gallery-id={image.id}
                   />
                   {image.category && (
                     <div className="absolute top-2 left-2 bg-black/70 text-white text-xs px-2 py-1 rounded">
@@ -294,14 +332,43 @@ export function GalleryPage() {
             className="space-y-4 py-4"
           >
             <div className="space-y-2">
-              <Label htmlFor="imageUrl">Image URL *</Label>
-              <Input
-                id="imageUrl"
-                placeholder="Enter image URL"
-                value={formData.imageUrl}
-                onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })}
-                required
-              />
+              <Label htmlFor="imageUrl">Image URL or File *</Label>
+              <div className="space-y-2">
+                <Input
+                  id="imageUrl"
+                  placeholder="Enter image URL (or upload file below)"
+                  value={formData.imageUrl}
+                  onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })}
+                  disabled={!!selectedFile}
+                />
+                <div className="relative">
+                  <input
+                    id="imageFile"
+                    type="file"
+                    accept="image/*"
+                    onChange={handleFileSelect}
+                    className="hidden"
+                  />
+                  <Label htmlFor="imageFile" className="flex items-center justify-center w-full px-3 py-2 border border-dashed border-input rounded-md cursor-pointer hover:bg-muted transition-colors">
+                    {selectedFile ? `✓ ${selectedFile.name}` : 'Click to upload image file'}
+                  </Label>
+                </div>
+                {filePreview && (
+                  <div className="relative w-full h-40 rounded-md overflow-hidden bg-muted">
+                    <img src={filePreview} alt="Preview" className="w-full h-full object-cover" />
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setSelectedFile(null);
+                        setFilePreview('');
+                      }}
+                      className="absolute top-2 right-2 px-2 py-1 bg-red-500 text-white text-xs rounded hover:bg-red-600"
+                    >
+                      Remove
+                    </button>
+                  </div>
+                )}
+              </div>
             </div>
             <div className="space-y-2">
               <Label htmlFor="caption">Caption</Label>
@@ -332,7 +399,7 @@ export function GalleryPage() {
                   <SelectValue placeholder="Select an album (optional)" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="">No Album</SelectItem>
+                  <SelectItem value="none">No Album</SelectItem>
                   {albums.map((album) => (
                     <SelectItem key={album.id} value={album.id}>
                       {album.title}

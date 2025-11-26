@@ -39,6 +39,8 @@ export function GalleryAlbums({ panchayatId }: GalleryAlbumsProps) {
     description: "",
     coverImage: "",
   });
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [filePreview, setFilePreview] = useState<string>("");
 
   useEffect(() => {
     fetchAlbums();
@@ -64,7 +66,18 @@ export function GalleryAlbums({ panchayatId }: GalleryAlbumsProps) {
     }
 
     try {
-      await albumApi.create( formData);
+      const payload: any = {
+        title: formData.title,
+        description: formData.description || undefined,
+      };
+
+      if (selectedFile) {
+        payload.coverImageFile = selectedFile;
+      } else if (formData.coverImage) {
+        payload.coverImage = formData.coverImage;
+      }
+
+      await albumApi.create(payload);
       toast.success("Album created successfully");
       closeDialog();
       fetchAlbums();
@@ -81,7 +94,18 @@ export function GalleryAlbums({ panchayatId }: GalleryAlbumsProps) {
     }
 
     try {
-      await albumApi.update( editingAlbum.id, formData);
+      const payload: any = {
+        title: formData.title,
+        description: formData.description || undefined,
+      };
+
+      if (selectedFile) {
+        payload.coverImageFile = selectedFile;
+      } else if (formData.coverImage) {
+        payload.coverImage = formData.coverImage;
+      }
+
+      await albumApi.update(editingAlbum.id, payload);
       toast.success("Album updated successfully");
       closeDialog();
       fetchAlbums();
@@ -109,6 +133,8 @@ export function GalleryAlbums({ panchayatId }: GalleryAlbumsProps) {
       description: album.description || "",
       coverImage: album.coverImage || "",
     });
+    setSelectedFile(null);
+    setFilePreview("");
     setIsDialogOpen(true);
   };
 
@@ -116,6 +142,25 @@ export function GalleryAlbums({ panchayatId }: GalleryAlbumsProps) {
     setIsDialogOpen(false);
     setEditingAlbum(null);
     setFormData({ title: "", description: "", coverImage: "" });
+    setSelectedFile(null);
+    setFilePreview("");
+  };
+
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+      toast.error('Please select a valid image file');
+      return;
+    }
+
+    setSelectedFile(file);
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      setFilePreview(event.target?.result as string);
+    };
+    reader.readAsDataURL(file);
   };
 
   if (loading) {
@@ -164,6 +209,7 @@ export function GalleryAlbums({ panchayatId }: GalleryAlbumsProps) {
                     src={album.coverImage}
                     alt={album.title}
                     className="w-full h-full object-cover"
+                    data-album-id={album.id}
                   />
                 ) : (
                   <div className="w-full h-full flex items-center justify-center">
@@ -236,13 +282,43 @@ export function GalleryAlbums({ panchayatId }: GalleryAlbumsProps) {
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="coverImage">Cover Image URL</Label>
-              <Input
-                id="coverImage"
-                placeholder="Enter image URL"
-                value={formData.coverImage}
-                onChange={(e) => setFormData({ ...formData, coverImage: e.target.value })}
-              />
+              <Label htmlFor="coverImage">Cover Image URL or File</Label>
+              <div className="space-y-2">
+                <Input
+                  id="coverImage"
+                  placeholder="Enter image URL (or upload file below)"
+                  value={formData.coverImage}
+                  onChange={(e) => setFormData({ ...formData, coverImage: e.target.value })}
+                  disabled={!!selectedFile}
+                />
+                <div className="relative">
+                  <input
+                    id="coverImageFile"
+                    type="file"
+                    accept="image/*"
+                    onChange={handleFileSelect}
+                    className="hidden"
+                  />
+                  <Label htmlFor="coverImageFile" className="flex items-center justify-center w-full px-3 py-2 border border-dashed border-input rounded-md cursor-pointer hover:bg-muted transition-colors">
+                    {selectedFile ? `✓ ${selectedFile.name}` : 'Click to upload cover image'}
+                  </Label>
+                </div>
+                {filePreview && (
+                  <div className="relative w-full h-40 rounded-md overflow-hidden bg-muted">
+                    <img src={filePreview} alt="Preview" className="w-full h-full object-cover" />
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setSelectedFile(null);
+                        setFilePreview('');
+                      }}
+                      className="absolute top-2 right-2 px-2 py-1 bg-red-500 text-white text-xs rounded hover:bg-red-600"
+                    >
+                      Remove
+                    </button>
+                  </div>
+                )}
+              </div>
             </div>
           </div>
           <DialogFooter>
