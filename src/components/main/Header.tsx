@@ -13,6 +13,7 @@ import {
 import type { Language } from "../../types";
 import { useAuth } from "@/contexts/AuthContext";
 import { useTranslation } from "react-i18next";
+import { Logo } from "../logo/Logo";
 
 interface HeaderProps {
   variant?: "platform" | "panchayat";
@@ -85,7 +86,7 @@ export function Header({ variant = "platform", panchayatName, onLanguageChange }
       ]
     : [
         { label: t('nav.home'), href: "#home" },
-        { label: t('nav.about'), href: "#about" },
+        { label: t('nav.news'), href: "#news" },
         { label: t('nav.schemes'), href: "#schemes" },
         { label: t('nav.projects'), href: "#projects" },
         { label: t('nav.gallery'), href: "#gallery" },
@@ -102,7 +103,8 @@ export function Header({ variant = "platform", panchayatName, onLanguageChange }
             onClick={handleLogoClick}
             className="flex items-center gap-2 sm:gap-3 hover:opacity-80 transition-opacity flex-shrink-0 min-w-0 cursor-pointer"
           >
-            <div className="flex h-8 w-8 sm:h-10 sm:w-10 items-center justify-center rounded-lg bg-gradient-to-br from-[#FF9933] via-white to-[#138808] p-[2px] flex-shrink-0">
+            <Logo size="small" />
+            {/* <div className="flex h-8 w-8 sm:h-10 sm:w-10 items-center justify-center rounded-lg bg-gradient-to-br from-[#FF9933] via-white to-[#138808] p-[2px] flex-shrink-0">
               <div className="flex h-full w-full items-center justify-center rounded-md bg-white">
                 <svg width="20" height="20" className="sm:w-6 sm:h-6" viewBox="0 0 24 24" fill="none">
                   <circle cx="12" cy="12" r="10" fill="#138808" />
@@ -110,8 +112,8 @@ export function Header({ variant = "platform", panchayatName, onLanguageChange }
                   <circle cx="12" cy="12" r="3" fill="#FF9933" />
                 </svg>
               </div>
-            </div>
-            <div className="min-w-0 flex-1">
+            </div> */}
+            {/* <div className="min-w-0 flex-1">
               <h1 className="text-sm sm:text-lg font-semibold text-[#1B2B5E] truncate">
                 {variant === "platform" ? "e-GramSeva" : (panchayatName || "Panchayat")}
               </h1>
@@ -120,7 +122,7 @@ export function Header({ variant = "platform", panchayatName, onLanguageChange }
                   Digital Platform for Gram Panchayats
                 </p>
               )}
-            </div>
+            </div> */}
           </Link>
 
           {/* Desktop Navigation */}

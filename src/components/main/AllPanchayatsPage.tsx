@@ -105,6 +105,7 @@ export function AllPanchayatsPage() {
       {/* Main Content */}
       <main className="container mx-auto px-4 py-8 lg:px-8">
         {/* Search Bar */}
+
         <div className="mb-8">
           <div className="mx-auto max-w-2xl">
             <div className="flex gap-2 rounded-lg bg-white p-2 shadow-sm border border-[#E5E5E5]">
