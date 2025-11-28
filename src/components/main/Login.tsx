@@ -5,7 +5,7 @@
 
 import { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { LogIn, Mail, Lock, Eye, EyeOff } from 'lucide-react';
+import { LogIn, Mail, Lock, Eye, EyeOff, ArrowLeft } from 'lucide-react';
 import { Button } from '../ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '../ui/card';
 import { Input } from '../ui/input';
@@ -46,24 +46,34 @@ export function Login() {
   };
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-[#F5F5F5] px-4 py-8">
-      <div className="w-full max-w-sm space-y-6">
-        {/* Logo and Header */}
-        <div className="text-center">
-          <div className="mb-4 flex justify-center">
-            <div className="flex h-16 w-16 items-center justify-center rounded-lg bg-gradient-to-br from-[#FF9933] via-white to-[#138808] p-[2px] shadow-md">
-              <div className="flex h-full w-full items-center justify-center rounded-md bg-white">
-                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" className="drop-shadow-sm">
-                  <circle cx="12" cy="12" r="10" fill="#138808" />
-                  <path d="M12 4 L12 20 M4 12 L20 12" stroke="white" strokeWidth="2" />
-                  <circle cx="12" cy="12" r="3" fill="#FF9933" />
-                </svg>
-              </div>
-            </div>
-          </div>
-          <h1 className="mb-2 text-3xl font-semibold text-[#1B2B5E] tracking-tight">e-GramSeva</h1>
-          <p className="text-sm text-[#666]">{t('login.subtitle')}</p>
+    <div className="min-h-screen bg-[#F5F5F5] py-8">
+      <div className="container mx-auto px-4 lg:px-8">
+        {/* Header */}
+        <div className="mb-8">
+          <Button variant="ghost" onClick={() => navigate("/")} className="text-[#666] hover:text-[#1B2B5E]">
+            <ArrowLeft className="mr-2 h-4 w-4" />
+            {t('common.backToHome')}
+          </Button>
         </div>
+
+        <div className="flex items-center justify-center">
+          <div className="w-full max-w-sm space-y-6">
+            {/* Logo and Header */}
+            <div className="text-center">
+              <div className="mb-4 flex justify-center">
+                <div className="flex h-16 w-16 items-center justify-center rounded-lg bg-gradient-to-br from-[#FF9933] via-white to-[#138808] p-[2px] shadow-md">
+                  <div className="flex h-full w-full items-center justify-center rounded-md bg-white">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" className="drop-shadow-sm">
+                      <circle cx="12" cy="12" r="10" fill="#138808" />
+                      <path d="M12 4 L12 20 M4 12 L20 12" stroke="white" strokeWidth="2" />
+                      <circle cx="12" cy="12" r="3" fill="#FF9933" />
+                    </svg>
+                  </div>
+                </div>
+              </div>
+              <h1 className="mb-2 text-3xl font-semibold text-[#1B2B5E] tracking-tight">e-GramSeva</h1>
+              <p className="text-sm text-[#666]">{t('login.subtitle')}</p>
+            </div>
 
         {/* Login Card */}
         <Card className="border border-[#E5E5E5] shadow-md">
@@ -173,17 +183,19 @@ export function Login() {
           </CardContent>
         </Card>
 
-        {/* Footer */}
-        <p className="mt-6 text-center text-sm text-[#666]">
-          {t('login.noAccount')}{' '}
-          <button
-            type="button"
-            className="text-[#E31E24] hover:underline font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-[#E31E24]/20 focus:ring-offset-1 rounded px-1"
-            onClick={() => navigate('/registration')}
-          >
-            {t('login.registerHere')}
-          </button>
-        </p>
+            {/* Footer */}
+            <p className="mt-6 text-center text-sm text-[#666]">
+              {t('login.noAccount')}{' '}
+              <button
+                type="button"
+                className="text-[#E31E24] hover:underline font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-[#E31E24]/20 focus:ring-offset-1 rounded px-1"
+                onClick={() => navigate('/registration')}
+              >
+                {t('login.registerHere')}
+              </button>
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   );

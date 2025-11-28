@@ -306,7 +306,7 @@ export function PanchayatWebsite() {
               </li>
             </ol>
           </nav>
-          
+
           {/* Panchayat Name and Info */}
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div>
@@ -318,9 +318,9 @@ export function PanchayatWebsite() {
               </p>
             </div>
             <div className="flex items-center gap-4">
-              <a 
-                href="https://www.india.gov.in" 
-                target="_blank" 
+              <a
+                href="https://www.india.gov.in"
+                target="_blank"
                 rel="noopener noreferrer"
                 className="flex items-center gap-1 text-sm text-[#666] hover:text-[#E31E24] transition-colors"
                 aria-label="Visit India.gov.in - Opens in new tab"
@@ -335,7 +335,7 @@ export function PanchayatWebsite() {
 
 
       {/* Quick Stats - Mobile Responsive Grid */}
-      <section 
+      <section
         className="border-b border-[#E5E5E5] bg-white py-6 sm:py-8"
         aria-label="Panchayat statistics"
       >
@@ -399,50 +399,54 @@ export function PanchayatWebsite() {
 
 
       {/* Main Content - Mobile Responsive */}
-      <main id="main-content" className="bg-[#F5F5F5] py-6 sm:py-8 md:py-12" role="main">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-6 sm:space-y-8">
-            {/* Horizontal Tab Navigation - Modern Pills Style */}
-            <div className="relative -mx-4 sm:mx-0 bg-white border-b border-[#E5E5E5]">
-              <TabsList className="w-full inline-flex sm:grid grid-cols-3 lg:grid-cols-6 overflow-x-auto overflow-y-hidden whitespace-nowrap px-4 sm:px-0 scrollbar-hide gap-1 sm:gap-0 h-auto bg-transparent">
-                <TabsTrigger 
-                  value="home" 
+      <main id="main-content" className="bg-[#F5F5F5]" role="main">
+        <Tabs value={activeTab} onValueChange={setActiveTab}>
+          {/* Horizontal Tab Navigation - Modern Pills Style with Sticky Behavior */}
+          <div className="sticky top-0 z-40 bg-white border-b border-[#E5E5E5] shadow-sm">
+            <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+              <TabsList className="w-full inline-flex sm:grid grid-cols-3 lg:grid-cols-6 overflow-x-auto overflow-y-hidden whitespace-nowrap scrollbar-hide gap-1 sm:gap-0 h-auto bg-transparent">
+                <TabsTrigger
+                  value="home"
                   className="text-sm px-4 py-3 rounded-t-lg data-[state=active]:bg-[#E31E24] data-[state=active]:text-white data-[state=active]:font-semibold text-[#666] hover:text-[#1B2B5E] transition-colors"
                 >
                   Home
                 </TabsTrigger>
-                <TabsTrigger 
-                  value="about" 
+                <TabsTrigger
+                  value="about"
                   className="text-sm px-4 py-3 rounded-t-lg data-[state=active]:bg-[#E31E24] data-[state=active]:text-white data-[state=active]:font-semibold text-[#666] hover:text-[#1B2B5E] transition-colors"
                 >
                   About
                 </TabsTrigger>
-                <TabsTrigger 
-                  value="schemes" 
+                <TabsTrigger
+                  value="schemes"
                   className="text-sm px-4 py-3 rounded-t-lg data-[state=active]:bg-[#E31E24] data-[state=active]:text-white data-[state=active]:font-semibold text-[#666] hover:text-[#1B2B5E] transition-colors"
                 >
                   Schemes
                 </TabsTrigger>
-                <TabsTrigger 
-                  value="projects" 
+                <TabsTrigger
+                  value="projects"
                   className="text-sm px-4 py-3 rounded-t-lg data-[state=active]:bg-[#E31E24] data-[state=active]:text-white data-[state=active]:font-semibold text-[#666] hover:text-[#1B2B5E] transition-colors"
                 >
                   Projects
                 </TabsTrigger>
-                <TabsTrigger 
-                  value="gallery" 
+                <TabsTrigger
+                  value="gallery"
                   className="text-sm px-4 py-3 rounded-t-lg data-[state=active]:bg-[#E31E24] data-[state=active]:text-white data-[state=active]:font-semibold text-[#666] hover:text-[#1B2B5E] transition-colors"
                 >
                   Gallery
                 </TabsTrigger>
-                <TabsTrigger 
-                  value="contact" 
+                <TabsTrigger
+                  value="contact"
                   className="text-sm px-4 py-3 rounded-t-lg data-[state=active]:bg-[#E31E24] data-[state=active]:text-white data-[state=active]:font-semibold text-[#666] hover:text-[#1B2B5E] transition-colors"
                 >
                   Contact
                 </TabsTrigger>
               </TabsList>
             </div>
+          </div>
+
+          <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 md:py-12">
+            <div className="space-y-6 sm:space-y-8">
 
 
             {/* Home Tab */}
@@ -986,8 +990,9 @@ export function PanchayatWebsite() {
                 </section>
               </div>
             </TabsContent>
-          </Tabs>
-        </div>
+            </div>
+          </div>
+        </Tabs>
       </main>
     </div>
   );
