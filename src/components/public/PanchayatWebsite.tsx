@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../ui
 import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
 import { Progress } from "../ui/progress";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "../ui/tabs";
+import { Tabs, TabsContent } from "../ui/tabs";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Input } from "../ui/input";
 import { Textarea } from "../ui/textarea";
@@ -398,53 +398,77 @@ export function PanchayatWebsite() {
       </section>
 
 
+      {/* Sticky Navigation Bar - Outside Tabs for proper sticky behavior */}
+      <div className="sticky top-0 z-50 bg-white border-b border-[#E5E5E5] shadow-sm">
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="inline-flex sm:grid grid-cols-3 lg:grid-cols-6 w-full h-14 sm:h-16 overflow-x-auto overflow-y-hidden whitespace-nowrap scrollbar-hide gap-1 sm:gap-0">
+            <button
+              onClick={() => setActiveTab("home")}
+              className={`text-sm px-6 h-full rounded-t-lg transition-colors flex-shrink-0 flex items-center justify-center ${
+                activeTab === "home"
+                  ? "bg-[#E31E24] text-white font-semibold"
+                  : "text-[#666] hover:text-[#1B2B5E]"
+              }`}
+            >
+              Home
+            </button>
+            <button
+              onClick={() => setActiveTab("about")}
+              className={`text-sm px-6 h-full rounded-t-lg transition-colors flex-shrink-0 flex items-center justify-center ${
+                activeTab === "about"
+                  ? "bg-[#E31E24] text-white font-semibold"
+                  : "text-[#666] hover:text-[#1B2B5E]"
+              }`}
+            >
+              About
+            </button>
+            <button
+              onClick={() => setActiveTab("schemes")}
+              className={`text-sm px-6 h-full rounded-t-lg transition-colors flex-shrink-0 flex items-center justify-center ${
+                activeTab === "schemes"
+                  ? "bg-[#E31E24] text-white font-semibold"
+                  : "text-[#666] hover:text-[#1B2B5E]"
+              }`}
+            >
+              Schemes
+            </button>
+            <button
+              onClick={() => setActiveTab("projects")}
+              className={`text-sm px-6 h-full rounded-t-lg transition-colors flex-shrink-0 flex items-center justify-center ${
+                activeTab === "projects"
+                  ? "bg-[#E31E24] text-white font-semibold"
+                  : "text-[#666] hover:text-[#1B2B5E]"
+              }`}
+            >
+              Projects
+            </button>
+            <button
+              onClick={() => setActiveTab("gallery")}
+              className={`text-sm px-6 h-full rounded-t-lg transition-colors flex-shrink-0 flex items-center justify-center ${
+                activeTab === "gallery"
+                  ? "bg-[#E31E24] text-white font-semibold"
+                  : "text-[#666] hover:text-[#1B2B5E]"
+              }`}
+            >
+              Gallery
+            </button>
+            <button
+              onClick={() => setActiveTab("contact")}
+              className={`text-sm px-6 h-full rounded-t-lg transition-colors flex-shrink-0 flex items-center justify-center ${
+                activeTab === "contact"
+                  ? "bg-[#E31E24] text-white font-semibold"
+                  : "text-[#666] hover:text-[#1B2B5E]"
+              }`}
+            >
+              Contact
+            </button>
+          </div>
+        </div>
+      </div>
+
       {/* Main Content - Mobile Responsive */}
       <main id="main-content" className="bg-[#F5F5F5]" role="main">
         <Tabs value={activeTab} onValueChange={setActiveTab}>
-          {/* Horizontal Tab Navigation - Modern Pills Style with Sticky Behavior */}
-          <div className="sticky top-0 z-40 bg-white border-b border-[#E5E5E5] shadow-sm">
-            <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-              <TabsList className="w-full inline-flex sm:grid grid-cols-3 lg:grid-cols-6 overflow-x-auto overflow-y-hidden whitespace-nowrap scrollbar-hide gap-1 sm:gap-0 h-auto bg-transparent">
-                <TabsTrigger
-                  value="home"
-                  className="text-sm px-4 py-3 rounded-t-lg data-[state=active]:bg-[#E31E24] data-[state=active]:text-white data-[state=active]:font-semibold text-[#666] hover:text-[#1B2B5E] transition-colors"
-                >
-                  Home
-                </TabsTrigger>
-                <TabsTrigger
-                  value="about"
-                  className="text-sm px-4 py-3 rounded-t-lg data-[state=active]:bg-[#E31E24] data-[state=active]:text-white data-[state=active]:font-semibold text-[#666] hover:text-[#1B2B5E] transition-colors"
-                >
-                  About
-                </TabsTrigger>
-                <TabsTrigger
-                  value="schemes"
-                  className="text-sm px-4 py-3 rounded-t-lg data-[state=active]:bg-[#E31E24] data-[state=active]:text-white data-[state=active]:font-semibold text-[#666] hover:text-[#1B2B5E] transition-colors"
-                >
-                  Schemes
-                </TabsTrigger>
-                <TabsTrigger
-                  value="projects"
-                  className="text-sm px-4 py-3 rounded-t-lg data-[state=active]:bg-[#E31E24] data-[state=active]:text-white data-[state=active]:font-semibold text-[#666] hover:text-[#1B2B5E] transition-colors"
-                >
-                  Projects
-                </TabsTrigger>
-                <TabsTrigger
-                  value="gallery"
-                  className="text-sm px-4 py-3 rounded-t-lg data-[state=active]:bg-[#E31E24] data-[state=active]:text-white data-[state=active]:font-semibold text-[#666] hover:text-[#1B2B5E] transition-colors"
-                >
-                  Gallery
-                </TabsTrigger>
-                <TabsTrigger
-                  value="contact"
-                  className="text-sm px-4 py-3 rounded-t-lg data-[state=active]:bg-[#E31E24] data-[state=active]:text-white data-[state=active]:font-semibold text-[#666] hover:text-[#1B2B5E] transition-colors"
-                >
-                  Contact
-                </TabsTrigger>
-              </TabsList>
-            </div>
-          </div>
-
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8 md:py-12">
             <div className="space-y-6 sm:space-y-8">
 
